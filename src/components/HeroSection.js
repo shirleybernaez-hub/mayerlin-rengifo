@@ -4,83 +4,61 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export default function HeroSection() {
-  const sectionRef   = useRef(null);
-  const bgRef        = useRef(null);
-  const vignetteRef  = useRef(null);
-  const dustRef      = useRef(null);
-  const contentRef   = useRef(null);
-  const titleRef     = useRef(null);
-  const taglineRef   = useRef(null);
-  const lineRef      = useRef(null);
-  const filterRef    = useRef(null);
+  const sectionRef  = useRef(null);
+  const skyRef      = useRef(null);
+  const brandRef    = useRef(null);
+  const houseRef    = useRef(null);
+  const contentRef  = useRef(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
 
-      /* ── ENTRANCE: Camera settles from deep zoom ── */
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      /* ── ENTRANCE ── */
+      const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
 
       tl
-        .fromTo(bgRef.current,
-          { scale: 1.22, filter: "brightness(0.2) blur(8px)" },
-          { scale: 1.06, filter: "brightness(0.65) blur(0px)", duration: 2.8 }
+        /* 1. Sky fades in + settles from slight zoom */
+        .fromTo(skyRef.current,
+          { scale: 1.1, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 2.2, ease: "power3.out" }
         )
-        .fromTo(titleRef.current,
-          { opacity: 0, y: 90, filter: "blur(12px)" },
-          { opacity: 1, y: 0,  filter: "blur(0px)",  duration: 1.6, ease: "expo.out" },
-          "-=2.2"
+        /* 2. Brand text rises + unblurs */
+        .fromTo(brandRef.current,
+          { y: 70, opacity: 0, filter: "blur(14px)" },
+          { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.6 },
+          "-=1.8"
         )
-        .fromTo(taglineRef.current,
-          { opacity: 0, y: 24 },
-          { opacity: 1, y: 0,  duration: 0.9 },
+        /* 3. House slides up from below */
+        .fromTo(houseRef.current,
+          { y: 160, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1.9, ease: "expo.out" },
+          "-=1.4"
+        )
+        /* 4. Content fades in last */
+        .fromTo(contentRef.current,
+          { opacity: 0, y: 26 },
+          { opacity: 1, y: 0, duration: 1.0, ease: "power2.out" },
           "-=0.9"
-        )
-        .fromTo(lineRef.current,
-          { scaleY: 0, opacity: 0, transformOrigin: "top center" },
-          { scaleY: 1, opacity: 0.45, duration: 0.7 },
-          "-=0.5"
-        )
-        .fromTo(filterRef.current,
-          { opacity: 0, y: 42 },
-          { opacity: 1, y: 0,  duration: 0.85 },
-          "-=0.3"
         );
 
-      /* ── SCROLL: Multi-layer cinematic parallax ── */
+      /* ── SCROLL PARALLAX (multi-layer depth) ── */
       ScrollTrigger.create({
         trigger: sectionRef.current,
         start: "top top",
         end: "bottom top",
         scrub: 1.8,
         onUpdate(self) {
-          const p       = self.progress;
-          const scrollY = self.scroll();
-
-          // Layer 0 — background: scale + parallax using scroll-driven formula
-          gsap.set(bgRef.current, {
-            scale:  1 + scrollY * 0.0005,
-            y:      scrollY * 0.1,
-            filter: `brightness(${0.65 - p * 0.35}) blur(${p * 2}px)`,
-          });
-
-          // Layer 1 — cinematic vignette deepens
-          gsap.set(vignetteRef.current, {
-            opacity: 0.25 + p * 0.65,
-          });
-
-          // Layer 2 — dust/depth haze moves mid-speed
-          gsap.set(dustRef.current, {
-            y:       p * 100,
-            opacity: p * 0.18,
-          });
-
-          // Layer 3 — foreground content floats up & fades (fastest layer)
-          gsap.set(contentRef.current, {
-            y:       p * -90,
-            opacity: Math.max(0, 1 - p * 1.8),
-          });
+          const p = self.progress;
+          // Sky moves slowest
+          gsap.set(skyRef.current,     { y: p * 55 });
+          // Brand text moves medium + fades
+          gsap.set(brandRef.current,   { y: p * -35, opacity: Math.max(0, 1 - p * 1.6) });
+          // House moves faster than sky, slower than content
+          gsap.set(houseRef.current,   { y: p * -75 });
+          // Content fades and moves fastest
+          gsap.set(contentRef.current, { y: p * -115, opacity: Math.max(0, 1 - p * 2.4) });
         },
       });
 
@@ -93,135 +71,83 @@ export default function HeroSection() {
     <section
       id="inicio"
       ref={sectionRef}
-      className="relative h-[115vh] w-full overflow-hidden flex items-center justify-center text-center px-6"
+      className="relative h-screen w-full overflow-hidden"
     >
-      {/* ── LAYER 0: Background image ── */}
+
+      {/* ── LAYER 0: Sky background ── */}
       <div
-        ref={bgRef}
-        className="absolute inset-[-8%] z-0 will-change-transform"
-        style={{ transformOrigin: "center center" }}
+        ref={skyRef}
+        className="absolute inset-0 z-0 will-change-transform"
+        style={{ opacity: 0 }}
       >
         <img
-          src="/hero_caracas.webp"
-          alt="Caracas"
+          src="/cielorentahouse.png"
+          alt=""
           className="w-full h-full object-cover"
           draggable="false"
         />
       </div>
 
-      {/* ── LAYER 1: Cinematic vignette (radial dark edges) ── */}
+      {/* ── LAYER 1: "Rent-A-House" brand text (behind house) ── */}
       <div
-        ref={vignetteRef}
-        className="absolute inset-0 z-[2] pointer-events-none"
+        ref={brandRef}
+        className="absolute z-10 inset-x-0 will-change-transform"
+        style={{ top: "18%", opacity: 0 }}
+        aria-hidden="true"
+      >
+        <img
+          src="/rentahouse_transp.png"
+          alt=""
+          className="w-full"
+          style={{ maxWidth: "92vw", margin: "0 auto", display: "block" }}
+          draggable="false"
+        />
+      </div>
+
+      {/* ── LAYER 2: Casa (transparent bg, in front of text) ── */}
+      <div
+        ref={houseRef}
+        className="absolute z-20 inset-x-0 bottom-0 will-change-transform"
+        style={{ opacity: 0 }}
+      >
+        <img
+          src="/Casa_rentahouse.png"
+          alt="Casa Rent-A-House"
+          className="w-full object-contain object-bottom"
+          style={{ maxHeight: "68vh" }}
+          draggable="false"
+        />
+      </div>
+
+      {/* ── LAYER 2b: Bottom gradient to blend house into scene ── */}
+      <div
+        className="absolute inset-x-0 bottom-0 z-[22] pointer-events-none"
         style={{
-          background:
-            "radial-gradient(ellipse 80% 70% at 50% 40%, transparent 10%, rgba(0,0,0,0.72) 100%)",
-          opacity: 0.25,
+          height: "28%",
+          background: "linear-gradient(to top, rgba(6,6,10,0.55) 0%, transparent 100%)",
         }}
       />
 
-      {/* ── LAYER 1b: Base dark overlay ── */}
-      <div className="absolute inset-0 z-[1] bg-black/20 pointer-events-none" />
-
-      {/* ── LAYER 2: Depth haze / dust ── */}
-      <div
-        ref={dustRef}
-        className="absolute inset-0 z-[3] pointer-events-none will-change-transform"
-        style={{
-          background:
-            "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.55) 100%)",
-          opacity: 0,
-        }}
-      />
-
-      {/* ── LAYER 3: Foreground content ── */}
+      {/* ── LAYER 3: Content — tagline + CTA ── */}
       <div
         ref={contentRef}
-        className="relative z-10 w-full max-w-6xl mt-24 will-change-transform"
+        className="absolute z-30 inset-x-0 bottom-10 flex flex-col items-center gap-4"
+        style={{ opacity: 0 }}
       >
-        {/* GHOST HEADLINE */}
-        <h1
-          ref={titleRef}
-          className="opacity-0 text-[clamp(52px,9vw,110px)] font-serif italic text-white tracking-tighter leading-[0.88]"
-          style={{ textShadow: "0 4px 60px rgba(0,0,0,0.5)" }}
-        >
-          Tu próximo <br />
-          <span className="text-white/35">capítulo comienza aquí.</span>
-        </h1>
-
-        {/* TAGLINE */}
-        <p
-          ref={taglineRef}
-          className="opacity-0 mt-9 text-[10px] md:text-[11px] uppercase tracking-[0.65em] text-white/80 font-bold"
-        >
+        <p className="text-[10px] md:text-[11px] uppercase tracking-[0.65em] text-white/85 font-bold">
           Asesoría inmobiliaria de alto nivel
         </p>
-
-        {/* VERTICAL LINE */}
-        <div ref={lineRef} className="flex justify-center mt-12 opacity-0">
-          <div className="w-px h-20 bg-gradient-to-b from-white via-white/40 to-transparent" />
-        </div>
-
-        {/* SEARCH FILTER */}
-        <div
-          ref={filterRef}
-          className="opacity-0 w-full rounded-2xl mt-10 overflow-hidden"
-          style={{
-            background: "rgba(8,8,16,0.55)",
-            backdropFilter: "blur(28px) saturate(1.4)",
-            WebkitBackdropFilter: "blur(28px) saturate(1.4)",
-            border: "1px solid rgba(255,255,255,0.13)",
-            boxShadow: "0 32px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08)",
-          }}
+        <a
+          href="#contacto"
+          className="inline-flex items-center gap-2 text-[9px] uppercase tracking-[0.28em] font-black px-9 py-3.5 rounded-full bg-[#E20613] text-white shadow-[0_4px_28px_rgba(226,6,19,0.5)] hover:bg-[#c00510] hover:shadow-[0_6px_36px_rgba(226,6,19,0.65)] transition-all duration-300 active:scale-95"
         >
-          {/* Top shimmer line */}
-          <div className="h-px w-full" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent)" }} />
-          <div className="p-6 md:p-7">
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-y-5 gap-x-4">
-              <FilterField label="Tipo de Propiedad" />
-              <FilterField label="Operación" />
-              <FilterField label="Ciudad" />
-              <FilterField label="Urbanización" />
-              <FilterField label="Dormitorios" />
-              <FilterField label="Baños" />
-              <FilterField label="Precio Mínimo" />
-              <FilterField label="Precio Máximo" />
-              <FilterField label="Código Flex" />
-              <div className="flex items-end">
-                <button className="w-full bg-[#E20613] text-white font-black uppercase text-[10px] tracking-[0.2em] h-11 rounded-xl hover:bg-[#c00510] transition-all duration-300 active:scale-95 shadow-[0_0_24px_rgba(226,6,19,0.45)]">
-                  Buscar
-                </button>
-              </div>
-            </div>
-          </div>
+          Contactar
+        </a>
+        <div className="mt-2 opacity-40">
+          <div className="w-px h-7 bg-gradient-to-b from-white to-transparent mx-auto" />
         </div>
       </div>
+
     </section>
-  );
-}
-
-function FilterField({ label }) {
-  return (
-    <div className="flex flex-col gap-1.5 text-left">
-      <label className="text-[8px] font-black uppercase tracking-[0.25em] text-white/45">
-        {label}
-      </label>
-      <div className="relative">
-        <select
-          className="w-full text-white/90 text-[11px] h-10 px-3 pr-7 rounded-xl outline-none appearance-none cursor-pointer transition-all duration-200 focus:ring-1 focus:ring-white/20"
-          style={{
-            background: "rgba(255,255,255,0.08)",
-            border: "1px solid rgba(255,255,255,0.14)",
-          }}
-          onFocus={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.14)"; e.currentTarget.style.border = "1px solid rgba(255,255,255,0.28)"; }}
-          onBlur={(e)  => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; e.currentTarget.style.border = "1px solid rgba(255,255,255,0.14)"; }}
-        >
-          <option style={{ background: "#101018", color: "#fff" }} value="">{label}</option>
-        </select>
-        <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-white/40 text-[7px]">
-          ▼
-        </div>
-      </div>
-    </div>
   );
 }
