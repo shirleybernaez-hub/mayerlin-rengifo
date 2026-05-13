@@ -24,7 +24,8 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto flex items-center justify-between">
 
         {/* LOGO */}
-        <motion.div
+        <motion.a
+          href="#inicio"
           className="flex-shrink-0"
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4 }}
@@ -44,7 +45,7 @@ export default function Navbar() {
               draggable="false"
             />
           )}
-        </motion.div>
+        </motion.a>
 
         {/* NAV */}
         <nav className="hidden md:flex items-center gap-10">
