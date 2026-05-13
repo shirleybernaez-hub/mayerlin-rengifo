@@ -48,15 +48,20 @@ export default function Navbar() {
 
         {/* NAV */}
         <nav className="hidden md:flex items-center gap-10">
-          {["Inicio", "Nosotros", "Propiedades", "Testimonios"].map((item) => (
+          {[
+            { label: "Inicio", id: "inicio" },
+            { label: "Nosotros", id: "nosotros" },
+            { label: "Propiedades", id: "propiedades" },
+            { label: "Testimonios", id: "testimonios" },
+          ].map(({ label, id }) => (
             <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
+              key={label}
+              href={`#${id}`}
               className={`text-[9px] uppercase tracking-[0.35em] font-black transition-colors duration-300 relative group ${
                 isScrolled ? "text-neutral-800" : "text-white drop-shadow-md"
               }`}
             >
-              {item}
+              {label}
               <span
                 className={`absolute -bottom-1 left-0 h-px w-0 group-hover:w-full transition-all duration-300 ${
                   isScrolled ? "bg-[#E20613]" : "bg-white"

@@ -147,7 +147,7 @@ export default function TestimonialsSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative bg-white">
+    <section id="testimonios" ref={sectionRef} className="relative bg-white">
 
 
       {/* ── Section header ── */}

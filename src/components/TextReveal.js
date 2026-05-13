@@ -85,6 +85,7 @@ export default function TextReveal({ text }) {
 
   return (
     <section
+      id="nosotros"
       ref={sectionRef}
       className="relative overflow-hidden bg-white"
     >

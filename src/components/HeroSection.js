@@ -91,6 +91,7 @@ export default function HeroSection() {
 
   return (
     <section
+      id="inicio"
       ref={sectionRef}
       className="relative h-[115vh] w-full overflow-hidden flex items-center justify-center text-center px-6"
     >

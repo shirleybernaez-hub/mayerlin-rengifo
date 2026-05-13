@@ -4,7 +4,12 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Instagram } from "lucide-react";
 
-const NAV = ["Inicio", "Nosotros", "Propiedades", "Testimonios"];
+const NAV = [
+  { label: "Inicio", id: "inicio" },
+  { label: "Nosotros", id: "nosotros" },
+  { label: "Propiedades", id: "propiedades" },
+  { label: "Testimonios", id: "testimonios" },
+];
 const MARQUEE_TEXT = "RENT-A-HOUSE · MAYERLIN RENGIFO · ASESORA INMOBILIARIA · CARACAS, VENEZUELA · ";
 
 export default function Footer() {
@@ -165,13 +170,13 @@ export default function Footer() {
 
         {/* Nav */}
         <nav ref={navRef} className="flex flex-wrap justify-center gap-8 mb-10">
-          {NAV.map((item) => (
+          {NAV.map(({ label, id }) => (
             <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              className="text-[8px] uppercase tracking-[0.45em] font-bold text-white/20 hover:text-white/65 hover:tracking-[0.5em] transition-all duration-400"
+              key={id}
+              href={`#${id}`}
+              className="text-[11px] uppercase tracking-[0.4em] font-bold text-white/40 hover:text-white/80 hover:tracking-[0.45em] transition-all duration-400"
             >
-              {item}
+              {label}
             </a>
           ))}
         </nav>

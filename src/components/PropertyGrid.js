@@ -121,6 +121,7 @@ export default function PropertyGrid() {
 
   return (
     <section
+      id="propiedades"
       ref={sectionRef}
       className="relative bg-[#f8f6f3] py-28 px-6 md:px-16 overflow-hidden scene-3d"
     >
