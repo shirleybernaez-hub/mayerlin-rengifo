@@ -181,10 +181,10 @@ export default function Footer() {
           href="https://www.instagram.com/mayerlinrengifo.rah"
           target="_blank"
           rel="noopener noreferrer"
-          className="mb-9 text-white/20 hover:text-white/70 transition-colors duration-300"
+          className="mb-9 text-white/50 hover:text-white transition-colors duration-300"
           aria-label="Instagram"
         >
-          <Instagram size={18} strokeWidth={1.5} />
+          <Instagram size={28} strokeWidth={1.4} />
         </a>
 
         {/* Thin separator */}

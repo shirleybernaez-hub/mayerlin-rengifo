@@ -89,10 +89,10 @@ export default function TextReveal({ text }) {
       className="relative overflow-hidden bg-white"
     >
       {/* ── Contenedor alineado con Navbar y PropertyGrid ── */}
-      <div className="max-w-7xl mx-auto px-6 md:px-16 flex flex-col lg:flex-row items-stretch gap-6 lg:gap-12 min-h-screen py-12 lg:py-0">
+      <div className="max-w-7xl mx-auto px-6 md:px-16 flex flex-col lg:flex-row items-stretch gap-8 lg:gap-12 py-16 lg:min-h-screen lg:py-0">
 
         {/* ── LEFT COLUMN: Photo ── */}
-        <div className="relative w-full h-[60vw] max-h-[520px] lg:max-h-none lg:h-auto lg:flex-none lg:w-[42%] lg:py-12">
+        <div className="relative w-full h-[90vw] max-h-[480px] sm:h-[70vw] sm:max-h-[560px] lg:max-h-none lg:h-auto lg:flex-none lg:w-[42%] lg:py-12">
 
           {/* Rounded container with clip-path reveal */}
           <div
@@ -148,12 +148,12 @@ export default function TextReveal({ text }) {
         </div>
 
         {/* ── RIGHT COLUMN: Quote text ── */}
-        <div className="flex-1 flex flex-col justify-center py-10 lg:py-24">
+        <div className="flex-1 flex flex-col justify-center pb-10 lg:py-24">
 
           {/* Top red accent */}
           <div
             ref={lineTopRef}
-            className="w-14 h-[1px] bg-gradient-to-r from-[#E20613] to-transparent mb-10 lg:mb-14"
+            className="w-14 h-[1px] bg-gradient-to-r from-[#E20613] to-transparent mb-8 lg:mb-14"
             style={{ transform: "scaleX(0)", transformOrigin: "left" }}
           />
 
@@ -172,7 +172,7 @@ export default function TextReveal({ text }) {
                   style={{
                     position: "absolute", inset: 0,
                     color: "rgba(0,0,0,0.06)",
-                    fontSize: "clamp(34px, 5.5vw, 66px)",
+                    fontSize: "clamp(28px, 5.5vw, 66px)",
                     fontWeight: 400,
                     letterSpacing: "-0.025em",
                     fontFamily: "ui-serif, Georgia, Cambria, 'Times New Roman', serif",
@@ -187,7 +187,7 @@ export default function TextReveal({ text }) {
                     opacity: 0,
                     filter: "blur(7px)",
                     display: "inline-block",
-                    fontSize: "clamp(34px, 5.5vw, 66px)",
+                    fontSize: "clamp(28px, 5.5vw, 66px)",
                     fontWeight: 400,
                     letterSpacing: "-0.025em",
                     color: "#171717",
