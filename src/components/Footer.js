@@ -2,8 +2,9 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Instagram } from "lucide-react";
 
-const NAV = ["Propiedades", "Franquicias", "Nosotros", "Contacto"];
+const NAV = ["Inicio", "Nosotros", "Propiedades", "Testimonios"];
 const MARQUEE_TEXT = "RENT-A-HOUSE · MAYERLIN RENGIFO · ASESORA INMOBILIARIA · CARACAS, VENEZUELA · ";
 
 export default function Footer() {
@@ -174,6 +175,17 @@ export default function Footer() {
             </a>
           ))}
         </nav>
+
+        {/* Instagram */}
+        <a
+          href="https://www.instagram.com/mayerlinrengifo.rah"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mb-9 text-white/20 hover:text-white/70 transition-colors duration-300"
+          aria-label="Instagram"
+        >
+          <Instagram size={18} strokeWidth={1.5} />
+        </a>
 
         {/* Thin separator */}
         <div className="w-full max-w-xs h-px mb-9 bg-white/[0.04]" />
