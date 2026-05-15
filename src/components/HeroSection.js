@@ -3,9 +3,9 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const FieldBox = ({ label, children }) => (
+const FieldBox = ({ children }) => (
   <div
-    className="flex flex-col gap-2 rounded-xl px-3 py-3.5 min-w-0"
+    className="flex items-center rounded-xl px-3 py-3.5 min-w-0"
     style={{
       background: "rgba(255,255,255,0.08)",
       border: "1px solid rgba(255,255,255,0.22)",
@@ -13,16 +13,23 @@ const FieldBox = ({ label, children }) => (
       WebkitBackdropFilter: "blur(10px)",
     }}
   >
-    <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/90 whitespace-nowrap">
-      {label}
-    </span>
     {children}
   </div>
 );
 
+const LabelRow = ({ labels }) => (
+  <div className="grid grid-cols-5 gap-2 mb-1 px-1">
+    {labels.map((l) => (
+      <span key={l} className="text-[8px] font-black uppercase tracking-[0.3em] text-white/90 whitespace-nowrap truncate">
+        {l}
+      </span>
+    ))}
+  </div>
+);
+
 const SelectBox = ({ label, options }) => (
-  <FieldBox label={label}>
-    <div className="relative flex items-center">
+  <FieldBox>
+    <div className="relative flex items-center w-full">
       <select
         className="w-full bg-transparent text-[10px] text-white/75 outline-none appearance-none cursor-pointer pr-6 leading-tight"
         style={{ WebkitAppearance: "none" }}
@@ -44,7 +51,7 @@ const SelectBox = ({ label, options }) => (
 );
 
 const InputBox = ({ label, placeholder }) => (
-  <FieldBox label={label}>
+  <FieldBox>
     <input
       type="text"
       placeholder={placeholder}
@@ -156,21 +163,27 @@ export default function HeroSection() {
           <div
             className="w-full rounded-2xl p-4"
             style={{
-              background: "rgba(8,8,12,0.48)",
+              background: "rgba(8,8,12,0.30)",
               border: "1px solid rgba(255,255,255,0.13)",
               boxShadow: "0 20px 60px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.1)",
               backdropFilter: "blur(32px)",
               WebkitBackdropFilter: "blur(32px)",
             }}
           >
+            {/* Labels fila 1 */}
+            <LabelRow labels={["Tipo de Propiedad", "Operación", "Ciudad", "Urbanización", "Dormitorios"]} />
+
             {/* Fila 1 — grid 5 columnas iguales */}
-            <div className="grid grid-cols-5 gap-2 mb-2">
+            <div className="grid grid-cols-5 gap-2 mb-4">
               <SelectBox label="Tipo de Propiedad" options={["Casa", "Apartamento", "Quinta", "Local Comercial", "Terreno", "Oficina"]} />
               <SelectBox label="Operación" options={["Venta", "Alquiler"]} />
               <SelectBox label="Ciudad" options={["Caracas", "Valencia", "Maracaibo", "Barquisimeto", "Maracay"]} />
               <SelectBox label="Urbanización" options={["La Castellana", "Los Chorros", "Country Club", "Altamira", "Las Mercedes"]} />
               <SelectBox label="Dormitorios" options={["1", "2", "3", "4", "5+"]} />
             </div>
+
+            {/* Labels fila 2 */}
+            <LabelRow labels={["Baños", "Precio Mínimo", "Precio Máximo", "Código Flex", ""]} />
 
             {/* Fila 2 — grid 5 columnas iguales (4 campos + botón) */}
             <div className="grid grid-cols-5 gap-2">
