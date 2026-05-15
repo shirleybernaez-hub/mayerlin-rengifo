@@ -34,9 +34,6 @@ const InputField = ({ label, placeholder }) => (
   </div>
 );
 
-const Divider = () => (
-  <div className="hidden md:block w-px self-stretch" style={{ background: "rgba(255,255,255,0.12)" }} />
-);
 
 export default function HeroSection() {
   const sectionRef = useRef(null);
