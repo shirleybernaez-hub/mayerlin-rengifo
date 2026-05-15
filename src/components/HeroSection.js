@@ -5,7 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const FieldBox = ({ label, children }) => (
   <div
-    className="flex-1 flex flex-col gap-1.5 rounded-xl px-3 py-2.5 min-w-0"
+    className="flex flex-col gap-1.5 rounded-xl px-3 py-2.5 min-w-0"
     style={{
       background: "rgba(255,255,255,0.08)",
       border: "1px solid rgba(255,255,255,0.22)",
@@ -156,15 +156,15 @@ export default function HeroSection() {
           <div
             className="w-full rounded-2xl p-3"
             style={{
-              background: "linear-gradient(135deg, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0.06) 100%)",
-              border: "1px solid rgba(255,255,255,0.22)",
-              boxShadow: "0 16px 48px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.28), inset 0 -1px 0 rgba(0,0,0,0.15)",
+              background: "rgba(8,8,12,0.80)",
+              border: "1px solid rgba(255,255,255,0.10)",
+              boxShadow: "0 20px 60px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.08)",
               backdropFilter: "blur(32px)",
               WebkitBackdropFilter: "blur(32px)",
             }}
           >
-            {/* Fila 1 — 5 campos iguales */}
-            <div className="flex flex-col md:flex-row gap-2 mb-2">
+            {/* Fila 1 — grid 5 columnas iguales */}
+            <div className="grid grid-cols-5 gap-2 mb-2">
               <SelectBox label="Tipo de Propiedad" options={["Casa", "Apartamento", "Quinta", "Local Comercial", "Terreno", "Oficina"]} />
               <SelectBox label="Operación" options={["Venta", "Alquiler"]} />
               <SelectBox label="Ciudad" options={["Caracas", "Valencia", "Maracaibo", "Barquisimeto", "Maracay"]} />
@@ -172,17 +172,17 @@ export default function HeroSection() {
               <SelectBox label="Dormitorios" options={["1", "2", "3", "4", "5+"]} />
             </div>
 
-            {/* Fila 2 — 4 campos + botón (mismo ancho que fila 1) */}
-            <div className="flex flex-col md:flex-row gap-2">
+            {/* Fila 2 — grid 5 columnas iguales (4 campos + botón) */}
+            <div className="grid grid-cols-5 gap-2">
               <SelectBox label="Baños" options={["1", "2", "3", "4", "5+"]} />
               <InputBox label="Precio Mínimo" placeholder="Precio Mínimo" />
               <InputBox label="Precio Máximo" placeholder="Precio Máximo" />
               <InputBox label="Código Flex" placeholder="Código Flex" />
               <button
-                className="flex-1 flex items-center justify-center gap-2 rounded-xl px-6 font-black text-[10px] uppercase tracking-[0.3em] text-white transition-all duration-300 hover:brightness-110 active:scale-95 whitespace-nowrap"
+                className="flex items-center justify-center gap-2 rounded-xl px-4 font-black text-[10px] uppercase tracking-[0.3em] text-white transition-all duration-300 hover:brightness-110 active:scale-95 whitespace-nowrap"
                 style={{
                   background: "linear-gradient(135deg, #E20613 0%, #b00410 100%)",
-                  boxShadow: "0 0 28px rgba(226,6,19,0.5)",
+                  boxShadow: "0 0 28px rgba(226,6,19,0.45)",
                   minHeight: "52px",
                 }}
               >
