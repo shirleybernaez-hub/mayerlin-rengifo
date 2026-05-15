@@ -1,7 +1,42 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+const SelectField = ({ label, options }) => (
+  <div className="flex flex-col gap-1 flex-1 min-w-0">
+    <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/60">{label}</span>
+    <div className="relative">
+      <select
+        className="w-full bg-transparent text-[10px] text-white/85 outline-none appearance-none cursor-pointer pr-5 leading-tight"
+        style={{ WebkitAppearance: "none" }}
+      >
+        <option value="" className="text-neutral-900 bg-white">{label}</option>
+        {options.map((o) => (
+          <option key={o} value={o.toLowerCase()} className="text-neutral-900 bg-white">{o}</option>
+        ))}
+      </select>
+      <svg className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none text-white/40" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </div>
+  </div>
+);
+
+const InputField = ({ label, placeholder }) => (
+  <div className="flex flex-col gap-1 flex-1 min-w-0">
+    <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/60">{label}</span>
+    <input
+      type="text"
+      placeholder={placeholder}
+      className="w-full bg-transparent text-[10px] text-white/85 placeholder-white/35 outline-none leading-tight"
+    />
+  </div>
+);
+
+const Divider = () => (
+  <div className="hidden md:block w-px self-stretch" style={{ background: "rgba(255,255,255,0.12)" }} />
+);
 
 export default function HeroSection() {
   const sectionRef = useRef(null);
@@ -13,58 +48,44 @@ export default function HeroSection() {
   const verMasRef  = useRef(null);
   const arrowRef   = useRef(null);
 
-  const [operacion, setOperacion] = useState("venta");
-
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
 
-      /* ── ENTRANCE ── */
       const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
 
       tl
-        /* 1. Cielo */
         .fromTo(skyRef.current,
           { scale: 1.12, filter: "brightness(0.5) blur(4px)" },
           { scale: 1.02, filter: "brightness(0.92) blur(0px)", duration: 2.4, ease: "power3.out" }
         )
-        /* 2. Quinta sube con fade-in */
         .fromTo(houseRef.current,
           { y: 90, opacity: 0 },
           { y: 0, opacity: 1, duration: 1.5, ease: "expo.out" },
           "-=1.8"
         )
-        /* 3. Buscador liquid glass entra después de la quinta */
         .fromTo(searchRef.current,
           { opacity: 0, y: 36, scale: 0.97 },
           { opacity: 1, y: 0, scale: 1, duration: 1.1, ease: "expo.out" },
           "-=0.3"
         )
-        /* 4. Ver más */
         .fromTo(verMasRef.current,
           { opacity: 0, y: 14 },
           { opacity: 1, y: 0, duration: 0.8 },
           "-=0.5"
         )
-        /* 5. Flecha */
         .fromTo(arrowRef.current,
           { opacity: 0, y: -6 },
           { opacity: 1, y: 0, duration: 0.5 },
           "-=0.35"
         );
 
-      /* Flecha rebota */
       gsap.to(arrowRef.current, {
-        y: 7,
-        repeat: -1,
-        yoyo: true,
-        duration: 0.9,
-        ease: "power1.inOut",
-        delay: 3.2,
+        y: 7, repeat: -1, yoyo: true, duration: 0.9,
+        ease: "power1.inOut", delay: 3.2,
       });
 
-      /* ── PARALLAX ON SCROLL ── */
       ScrollTrigger.create({
         trigger: sectionRef.current,
         start: "top top",
@@ -72,20 +93,14 @@ export default function HeroSection() {
         scrub: 1.6,
         onUpdate(self) {
           const p = self.progress;
-
           gsap.set(skyRef.current, {
-            y:      p * 100,
-            scale:  1.02 + p * 0.04,
+            y: p * 100, scale: 1.02 + p * 0.04,
             filter: `brightness(${0.92 - p * 0.42}) blur(${p * 2}px)`,
           });
-
           gsap.set(houseRef.current, { y: p * 45 });
-
           gsap.set(overlayRef.current, { opacity: 0.15 + p * 0.6 });
-
           gsap.set(contentRef.current, {
-            y:       p * -80,
-            opacity: Math.max(0, 1 - p * 2.2),
+            y: p * -80, opacity: Math.max(0, 1 - p * 2.2),
           });
         },
       });
@@ -95,177 +110,104 @@ export default function HeroSection() {
     return () => ctx.revert();
   }, []);
 
+  const glassPanel = {
+    background: "linear-gradient(135deg, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0.06) 100%)",
+    border: "1px solid rgba(255,255,255,0.2)",
+    boxShadow: "0 12px 40px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.25), inset 0 -1px 0 rgba(0,0,0,0.1)",
+    backdropFilter: "blur(24px)",
+    WebkitBackdropFilter: "blur(24px)",
+  };
+
   return (
-    <section
-      id="inicio"
-      ref={sectionRef}
-      className="relative h-screen w-full overflow-hidden"
-    >
+    <section id="inicio" ref={sectionRef} className="relative h-screen w-full overflow-hidden">
 
-      {/* ── Capa 1: Cielo ── */}
-      <div
-        ref={skyRef}
-        className="absolute inset-0 z-0 will-change-transform"
-        style={{ transformOrigin: "center center" }}
-      >
-        <img
-          src="/cielorentahouse.png"
-          alt=""
-          className="w-full h-full object-cover object-top"
-          draggable="false"
-        />
+      {/* Cielo */}
+      <div ref={skyRef} className="absolute inset-0 z-0 will-change-transform" style={{ transformOrigin: "center center" }}>
+        <img src="/cielorentahouse.png" alt="" className="w-full h-full object-cover object-top" draggable="false" />
       </div>
 
-      {/* ── Capa 2: Quinta ── */}
-      <div
-        ref={houseRef}
-        className="absolute inset-x-0 bottom-0 z-10 will-change-transform"
-        style={{ opacity: 0 }}
-      >
-        <img
-          src="/quintahouse.png"
-          alt="Rent-A-House"
-          className="w-full object-contain object-bottom"
-          draggable="false"
-        />
+      {/* Quinta */}
+      <div ref={houseRef} className="absolute inset-x-0 bottom-0 z-10 will-change-transform" style={{ opacity: 0 }}>
+        <img src="/quintahouse.png" alt="Rent-A-House" className="w-full object-contain object-bottom" draggable="false" />
       </div>
 
-      {/* ── Viñeta ── */}
-      <div
-        ref={overlayRef}
-        className="absolute inset-0 z-20 pointer-events-none"
-        style={{
-          background: "radial-gradient(ellipse 90% 80% at 50% 50%, transparent 20%, rgba(0,0,0,0.65) 100%)",
-          opacity: 0.15,
-        }}
-      />
+      {/* Viñeta */}
+      <div ref={overlayRef} className="absolute inset-0 z-20 pointer-events-none" style={{ background: "radial-gradient(ellipse 90% 80% at 50% 50%, transparent 20%, rgba(0,0,0,0.65) 100%)", opacity: 0.15 }} />
 
-      {/* ── Degradado inferior ── */}
-      <div
-        className="absolute inset-x-0 bottom-0 z-20 pointer-events-none h-64"
-        style={{ background: "linear-gradient(to top, rgba(4,4,6,0.85) 0%, transparent 100%)" }}
-      />
+      {/* Degradado inferior */}
+      <div className="absolute inset-x-0 bottom-0 z-20 pointer-events-none h-64" style={{ background: "linear-gradient(to top, rgba(4,4,6,0.88) 0%, transparent 100%)" }} />
 
-      {/* ── Contenido ── */}
-      <div
-        ref={contentRef}
-        className="absolute z-30 inset-x-0 bottom-6 flex flex-col items-center gap-5 px-4 md:px-8 will-change-transform"
-      >
+      {/* Contenido */}
+      <div ref={contentRef} className="absolute z-30 inset-x-0 bottom-6 flex flex-col items-center gap-4 px-4 md:px-10 will-change-transform">
 
-        {/* ── Buscador Liquid Glass ── */}
-        <div
-          ref={searchRef}
-          className="w-full max-w-4xl"
-          style={{ opacity: 0 }}
-        >
-          {/* Toggle Venta / Alquiler */}
-          <div className="flex gap-1 mb-3 justify-center">
-            {["venta", "alquiler"].map((op) => (
+        {/* Buscador */}
+        <div ref={searchRef} className="w-full max-w-5xl" style={{ opacity: 0 }}>
+          <div className="rounded-2xl overflow-hidden" style={glassPanel}>
+
+            {/* Fila 1 */}
+            <div className="flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-white/10">
+              <div className="flex-1 px-5 py-3">
+                <SelectField label="Tipo de Propiedad" options={["Casa", "Apartamento", "Quinta", "Local Comercial", "Terreno", "Oficina"]} />
+              </div>
+              <div className="flex-1 px-5 py-3">
+                <SelectField label="Operación" options={["Venta", "Alquiler"]} />
+              </div>
+              <div className="flex-1 px-5 py-3">
+                <SelectField label="Ciudad" options={["Caracas", "Valencia", "Maracaibo", "Barquisimeto", "Maracay"]} />
+              </div>
+              <div className="flex-1 px-5 py-3">
+                <SelectField label="Urbanización" options={["La Castellana", "Los Chorros", "Country Club", "Altamira", "Las Mercedes"]} />
+              </div>
+              <div className="flex-1 px-5 py-3">
+                <SelectField label="Dormitorios" options={["1", "2", "3", "4", "5+"]} />
+              </div>
+            </div>
+
+            {/* Separador */}
+            <div className="w-full h-px" style={{ background: "rgba(255,255,255,0.1)" }} />
+
+            {/* Fila 2 */}
+            <div className="flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-white/10">
+              <div className="flex-1 px-5 py-3">
+                <SelectField label="Baños" options={["1", "2", "3", "4", "5+"]} />
+              </div>
+              <div className="flex-1 px-5 py-3">
+                <InputField label="Precio Mínimo" placeholder="Precio Mínimo" />
+              </div>
+              <div className="flex-1 px-5 py-3">
+                <InputField label="Precio Máximo" placeholder="Precio Máximo" />
+              </div>
+              <div className="flex-1 px-5 py-3">
+                <InputField label="Código Flex" placeholder="Código Flex" />
+              </div>
+              {/* Botón buscar */}
               <button
-                key={op}
-                onClick={() => setOperacion(op)}
-                className="px-5 py-1.5 rounded-full text-[9px] uppercase tracking-[0.35em] font-black transition-all duration-300"
-                style={{
-                  background: operacion === op
-                    ? "rgba(226,6,19,0.85)"
-                    : "rgba(255,255,255,0.1)",
-                  color: "white",
-                  border: operacion === op
-                    ? "1px solid rgba(226,6,19,0.6)"
-                    : "1px solid rgba(255,255,255,0.15)",
-                  backdropFilter: "blur(12px)",
-                }}
+                className="flex items-center justify-center gap-2 px-10 py-3 font-black text-[10px] uppercase tracking-[0.3em] text-white transition-all duration-300 hover:brightness-110 active:scale-95"
+                style={{ background: "linear-gradient(135deg, #E20613 0%, #b00410 100%)", boxShadow: "0 0 24px rgba(226,6,19,0.45)" }}
               >
-                {op}
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                Buscar
               </button>
-            ))}
-          </div>
-
-          {/* Panel glass */}
-          <div
-            className="w-full flex flex-col md:flex-row overflow-hidden rounded-2xl md:rounded-full"
-            style={{
-              background: "linear-gradient(135deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.07) 100%)",
-              border: "1px solid rgba(255,255,255,0.22)",
-              boxShadow: "0 12px 40px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.28), inset 0 -1px 0 rgba(0,0,0,0.12)",
-              backdropFilter: "blur(24px)",
-              WebkitBackdropFilter: "blur(24px)",
-            }}
-          >
-            {/* Tipo de inmueble */}
-            <div
-              className="flex-1 flex items-center gap-2 px-5 py-4 border-b md:border-b-0 md:border-r"
-              style={{ borderColor: "rgba(255,255,255,0.12)" }}
-            >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2">
-                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-                <polyline points="9 22 9 12 15 12 15 22"/>
-              </svg>
-              <select
-                className="w-full bg-transparent text-[9px] uppercase tracking-[0.25em] text-white/80 outline-none cursor-pointer appearance-none"
-                style={{ WebkitAppearance: "none" }}
-              >
-                <option value="" className="text-neutral-900 bg-neutral-100">Tipo de inmueble</option>
-                <option value="casa" className="text-neutral-900 bg-neutral-100">Casa</option>
-                <option value="apartamento" className="text-neutral-900 bg-neutral-100">Apartamento</option>
-                <option value="quinta" className="text-neutral-900 bg-neutral-100">Quinta</option>
-                <option value="local" className="text-neutral-900 bg-neutral-100">Local comercial</option>
-                <option value="terreno" className="text-neutral-900 bg-neutral-100">Terreno</option>
-              </select>
             </div>
 
-            {/* Ubicación */}
-            <div
-              className="flex-1 flex items-center gap-2 px-5 py-4 border-b md:border-b-0 md:border-r"
-              style={{ borderColor: "rgba(255,255,255,0.12)" }}
-            >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
-                <circle cx="12" cy="10" r="3"/>
-              </svg>
-              <input
-                type="text"
-                placeholder="Ubicación"
-                className="w-full bg-transparent text-[9px] uppercase tracking-[0.25em] text-white/80 placeholder-white/35 outline-none"
-              />
-            </div>
-
-            {/* Botón buscar */}
-            <button
-              className="flex items-center justify-center gap-2 px-8 py-4 font-black text-[9px] uppercase tracking-[0.3em] text-white transition-all duration-300 hover:brightness-110 active:scale-95"
-              style={{
-                background: "linear-gradient(135deg, #E20613 0%, #b00410 100%)",
-                boxShadow: "0 0 24px rgba(226,6,19,0.5)",
-              }}
-            >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <circle cx="11" cy="11" r="8"/>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-              </svg>
-              Buscar
-            </button>
           </div>
         </div>
 
         {/* Ver más */}
         <div className="flex flex-col items-center gap-2">
-          <a
-            ref={verMasRef}
-            href="#propiedades"
-            className="text-[9px] uppercase tracking-[0.55em] text-white/70 font-bold hover:text-white transition-colors duration-300"
-            style={{ opacity: 0 }}
-          >
+          <a ref={verMasRef} href="#propiedades" className="text-[9px] uppercase tracking-[0.55em] text-white/70 font-bold hover:text-white transition-colors duration-300" style={{ opacity: 0 }}>
             Ver más
           </a>
           <div ref={arrowRef} style={{ opacity: 0 }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/50">
-              <polyline points="6 9 12 15 18 9" />
+              <polyline points="6 9 12 15 18 9"/>
             </svg>
           </div>
         </div>
 
       </div>
-
     </section>
   );
 }
