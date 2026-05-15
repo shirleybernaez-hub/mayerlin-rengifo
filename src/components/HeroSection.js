@@ -5,7 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const FieldBox = ({ label, children }) => (
   <div
-    className="flex flex-col gap-1.5 rounded-xl px-3 py-2.5 min-w-0"
+    className="flex flex-col gap-2 rounded-xl px-3 py-3.5 min-w-0"
     style={{
       background: "rgba(255,255,255,0.08)",
       border: "1px solid rgba(255,255,255,0.22)",
@@ -148,17 +148,17 @@ export default function HeroSection() {
       <div
         ref={contentRef}
         className="absolute z-30 inset-x-0 flex flex-col items-center gap-4 px-4 md:px-10 will-change-transform"
-        style={{ top: "50%", transform: "translateY(-10%)" }}
+        style={{ top: "50%", transform: "translateY(5%)" }}
       >
 
         {/* Buscador */}
         <div ref={searchRef} className="w-full max-w-5xl" style={{ opacity: 0 }}>
           <div
-            className="w-full rounded-2xl p-3"
+            className="w-full rounded-2xl p-4"
             style={{
-              background: "rgba(8,8,12,0.80)",
-              border: "1px solid rgba(255,255,255,0.10)",
-              boxShadow: "0 20px 60px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.08)",
+              background: "rgba(8,8,12,0.48)",
+              border: "1px solid rgba(255,255,255,0.13)",
+              boxShadow: "0 20px 60px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.1)",
               backdropFilter: "blur(32px)",
               WebkitBackdropFilter: "blur(32px)",
             }}
