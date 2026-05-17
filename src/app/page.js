@@ -11,17 +11,17 @@ export default function Home() {
       {/* Scene 1 — Cinematic hero with parallax depth */}
       <HeroSection />
 
-      {/* Scene 2 — Word illumination on black */}
-      <TextReveal text="Los bienes raíces no son sobre casas, son sobre personas." />
-
-      {/* Scene 3 — Property showcase with parallax cards */}
+      {/* Scene 2 — Lo más destacado: 6 cards parallax */}
       <PropertyGrid />
 
-      {/* Scene 4 — Client testimonials with floating depth */}
+      {/* Scene 3 — Client testimonials */}
       <TestimonialsSection />
 
-      {/* Scene 5 — Lead capture form + FAQ */}
+      {/* Scene 4 — Lead capture form + FAQ */}
       <ContactSection />
+
+      {/* Scene 5 — Mayerlin Rengifo photo + quote */}
+      <TextReveal text="Los bienes no son sobre inmuebles, son sobre personas." />
 
       {/* Scene 6 — Dark cinematic footer */}
       <Footer />

@@ -89,127 +89,75 @@ export default function TextReveal({ text }) {
       ref={sectionRef}
       className="relative overflow-hidden bg-white"
     >
-      {/* ── Contenedor alineado con Navbar y PropertyGrid ── */}
-      <div className="max-w-7xl mx-auto px-6 md:px-16 flex flex-col lg:flex-row items-stretch gap-8 lg:gap-12 py-16 lg:min-h-screen lg:py-0">
+      <div style={{ padding: "56px 133px", display: "flex", flexDirection: "row", alignItems: "center", gap: "56px" }}>
 
-        {/* ── LEFT COLUMN: Photo ── */}
-        <div className="relative w-full h-[90vw] max-h-[480px] sm:h-[70vw] sm:max-h-[560px] lg:max-h-none lg:h-auto lg:flex-none lg:w-[42%] lg:py-12">
-
-          {/* Rounded container with clip-path reveal */}
+        {/* ── Foto + logo encima ── */}
+        <div style={{ flexShrink: 0, width: "148px" }}>
           <div
             ref={photoWrapRef}
-            className="relative h-full overflow-hidden will-change-transform"
-            style={{ borderRadius: "25px", clipPath: "inset(0 0 100% 0 round 25px)" }}
+            style={{ borderRadius: "14px", height: "196px", overflow: "hidden", position: "relative", clipPath: "inset(0 0 100% 0 round 14px)" }}
           >
-            {/* B&W photo */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               ref={photoRef}
               src="/mayerlin-rengifo.png"
-              alt="Mayerlin Rengifo — Asesora Inmobiliaria"
-              className="absolute inset-0 w-full object-cover object-top will-change-transform"
-              style={{ height: "115%", top: "-7.5%",
-                filter: "grayscale(100%) contrast(1.06) brightness(0.78)" }}
+              alt="Mayerlin Rengifo"
+              style={{ position: "absolute", inset: 0, width: "100%", height: "118%", top: "-9%", objectFit: "cover", objectPosition: "center 15%", filter: "grayscale(100%) contrast(1.05) brightness(0.82)" }}
               draggable="false"
             />
-
-            {/* Top dark area for logo legibility */}
-            <div
-              className="absolute top-0 inset-x-0 h-28 pointer-events-none"
-              style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, transparent 100%)" }}
+            {/* overlay oscuro top para legibilidad del logo */}
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "64px", background: "linear-gradient(to bottom, rgba(0,0,0,0.52) 0%, transparent 100%)", pointerEvents: "none" }} />
+            {/* Logo sobre la foto */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/rentahouse-maye.svg"
+              alt="Rent-A-House"
+              style={{ position: "absolute", top: "12px", left: "50%", transform: "translateX(-50%)", height: "28px", width: "auto", opacity: 0.92 }}
+              draggable="false"
             />
-
-            {/* Logo centrado en la parte superior de la foto */}
-            <div className="absolute top-6 inset-x-0 flex justify-center z-10">
-              <img
-                src="/rentahouse-maye.svg"
-                alt="Rent-A-House"
-                className="h-9 sm:h-11 w-auto"
-                style={{ opacity: 0.9 }}
-                draggable="false"
-              />
-            </div>
-
-            {/* Bottom dark backdrop */}
-            <div
-              className="absolute bottom-0 inset-x-0 h-48 pointer-events-none"
-              style={{ background: "linear-gradient(to top, rgba(5,5,5,0.88) 0%, rgba(5,5,5,0.4) 55%, transparent 100%)" }}
-            />
-
-            {/* Credit bottom */}
-            <div className="absolute bottom-0 inset-x-0 z-10 px-6 pb-6 flex flex-col items-start gap-2">
-              <div className="w-12 h-[1px] bg-gradient-to-r from-[#E20613] to-transparent" />
-              <p
-                ref={creditRef}
-                className="opacity-0 text-[8px] uppercase tracking-[0.5em] font-bold text-white/50"
-              >
-                Rent-A-House · Mayerlin Rengifo
-              </p>
-            </div>
+            {/* bottom fade */}
+            <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "60px", background: "linear-gradient(to top, rgba(5,5,5,0.60) 0%, transparent 100%)", pointerEvents: "none" }} />
+            <p
+              ref={creditRef}
+              style={{ position: "absolute", bottom: "9px", left: "10px", opacity: 0, fontFamily: "'Manrope', sans-serif", fontSize: "7px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.38em", color: "rgba(255,255,255,0.40)", margin: 0 }}
+            >
+              Mayerlin R.
+            </p>
           </div>
         </div>
 
-        {/* ── RIGHT COLUMN: Quote text ── */}
-        <div className="flex-1 flex flex-col justify-center pb-10 lg:py-24">
+        {/* ── Separador vertical ── */}
+        <div style={{ flexShrink: 0, width: "1px", height: "52px", background: "linear-gradient(to bottom, transparent, rgba(26,29,36,0.14), transparent)" }} />
 
-          {/* Top red accent */}
+        {/* ── Quote — una sola línea ── */}
+        <div style={{ flex: 1, minWidth: 0 }}>
           <div
             ref={lineTopRef}
-            className="w-14 h-[1px] bg-gradient-to-r from-[#E20613] to-transparent mb-8 lg:mb-14"
-            style={{ transform: "scaleX(0)", transformOrigin: "left" }}
+            style={{ width: "36px", height: "1px", background: "linear-gradient(90deg, #E20613, transparent)", marginBottom: "18px", transform: "scaleX(0)", transformOrigin: "left" }}
           />
 
-          {/* QUOTE — sentence case, word-by-word reveal */}
           <div
             ref={quoteRef}
-            className="flex flex-wrap gap-x-2 sm:gap-x-3 md:gap-x-4"
-            style={{ perspective: "900px" }}
+            style={{ display: "flex", flexWrap: "nowrap", gap: "0 8px", whiteSpace: "nowrap" }}
           >
             {words.map((word, i) => (
-              <span key={i} className="word-unit relative inline-block leading-[1.2]">
-                {/* Ghost */}
+              <span key={i} className="word-unit" style={{ position: "relative", display: "inline-block", lineHeight: 1.25 }}>
                 <span
-                  className="ghost select-none pointer-events-none"
+                  className="ghost"
                   aria-hidden="true"
-                  style={{
-                    position: "absolute", inset: 0,
-                    color: "rgba(0,0,0,0.06)",
-                    fontSize: "clamp(28px, 5.5vw, 66px)",
-                    fontWeight: 400,
-                    letterSpacing: "-0.025em",
-                    fontFamily: "ui-serif, Georgia, Cambria, 'Times New Roman', serif",
-                    fontStyle: "italic",
-                    lineHeight: 1.25,
-                  }}
+                  style={{ position: "absolute", inset: 0, color: "rgba(0,0,0,0.06)", fontSize: "clamp(16px,1.85vw,26px)", fontWeight: 400, letterSpacing: "-0.015em", fontFamily: "'Newsreader', Georgia, serif", fontStyle: "italic", lineHeight: 1.25, userSelect: "none", pointerEvents: "none" }}
                 >{word}</span>
-                {/* Vivid */}
                 <span
                   className="vivid"
-                  style={{
-                    opacity: 0,
-                    filter: "blur(7px)",
-                    display: "inline-block",
-                    fontSize: "clamp(28px, 5.5vw, 66px)",
-                    fontWeight: 400,
-                    letterSpacing: "-0.025em",
-                    color: "#171717",
-                    fontFamily: "ui-serif, Georgia, Cambria, 'Times New Roman', serif",
-                    fontStyle: "italic",
-                    lineHeight: 1.25,
-                  }}
+                  style={{ opacity: 0, filter: "blur(7px)", display: "inline-block", fontSize: "clamp(16px,1.85vw,26px)", fontWeight: 400, letterSpacing: "-0.015em", color: "#1A1D24", fontFamily: "'Newsreader', Georgia, serif", fontStyle: "italic", lineHeight: 1.25 }}
                 >{word}</span>
               </span>
             ))}
           </div>
 
-          {/* Bottom red accent */}
           <div
             ref={lineBottomRef}
-            className="mt-12 lg:mt-16 w-16 h-[1px] opacity-80"
-            style={{
-              background: "linear-gradient(90deg, #E20613, transparent)",
-              transform: "scaleX(0)",
-              transformOrigin: "left",
-            }}
+            style={{ width: "36px", height: "1px", background: "linear-gradient(90deg, #E20613, transparent)", marginTop: "18px", opacity: 0.7, transform: "scaleX(0)", transformOrigin: "left" }}
           />
         </div>
       </div>

@@ -1,162 +1,286 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
 const NAV_LINKS = [
   { label: "Inicio",      href: "#inicio" },
-  { label: "Nosotros",    href: "#nosotros" },
   { label: "Propiedades", href: "#propiedades" },
+  { label: "Nosotros",    href: "#nosotros" },
   { label: "Testimonios", href: "#testimonios" },
+  { label: "Referidos",   href: "#referidos" },
 ];
 
-export default function Navbar() {
-  const headerRef          = useRef(null);
-  const floatingLogoRef    = useRef(null);
-  const navPillRef         = useRef(null);
-  const navLogoWrapperRef  = useRef(null);
-  const separatorRef       = useRef(null);
+const GLASS = {
+  background:           "rgba(255,255,255,0.10)",
+  border:               "1px solid rgba(255,255,255,0.20)",
+  backdropFilter:       "blur(14px)",
+  WebkitBackdropFilter: "blur(14px)",
+};
 
+const HERO_PT = "16px";
+
+export default function Navbar() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [isSticky, setIsSticky] = useState(false);
+
+  const headerRef  = useRef(null);
+  const navPillRef = useRef(null);
+  const ctaRef     = useRef(null);
+  const linksRef   = useRef([]);
+  const stickyRef  = useRef(false);
+
+  /* ── Lock body scroll when mobile menu is open ── */
   useEffect(() => {
-    /* ── Entrada inicial del header ── */
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
+
+  /* ── GSAP entrance + scroll state ── */
+  useEffect(() => {
     gsap.fromTo(headerRef.current,
-      { opacity: 0, y: -20 },
-      { opacity: 1, y: 0, duration: 1.0, ease: "expo.out", delay: 0.4 }
+      { opacity: 0, y: -16 },
+      { opacity: 1, y: 0, duration: 0.9, ease: "expo.out", delay: 0.3 }
     );
 
-    /* ── Animación en scroll ── */
-    const onScroll = () => {
-      const p = Math.min(window.scrollY / 280, 1); // 0 → 1 en los primeros 280px
+    const applyHero = () => {
+      if (!headerRef.current) return;
+      headerRef.current.style.background           = "transparent";
+      headerRef.current.style.boxShadow            = "none";
+      headerRef.current.style.backdropFilter       = "none";
+      headerRef.current.style.WebkitBackdropFilter = "none";
+      headerRef.current.style.paddingTop           = HERO_PT;
 
-      /* Logo flotante: desaparece y sube */
-      gsap.set(floatingLogoRef.current, {
-        opacity:  Math.max(0, 1 - p * 2.2),
-        scale:    1 - p * 0.12,
-        y:        -p * 16,
-      });
-
-      /* Logo dentro del navbar: aparece con slide desde la izquierda */
-      const logoProgress = Math.max(0, Math.min(1, (p - 0.35) * 3));
-      gsap.set(navLogoWrapperRef.current, {
-        maxWidth: `${logoProgress * 130}px`,
-        opacity:   logoProgress,
-      });
-
-      /* Separador junto al logo interno */
-      gsap.set(separatorRef.current, {
-        opacity: logoProgress,
-        maxWidth: `${logoProgress * 20}px`,
-      });
-
-      /* Navbar: glass → blanco sólido */
-      if (p < 0.65) {
-        navPillRef.current.style.background =
-          `linear-gradient(135deg, rgba(255,255,255,${0.11 + p * 0.1}) 0%, rgba(255,255,255,${0.05 + p * 0.08}) 100%)`;
-        navPillRef.current.style.backdropFilter  = `blur(${28 + p * 10}px)`;
-        navPillRef.current.style.WebkitBackdropFilter = `blur(${28 + p * 10}px)`;
-        navPillRef.current.style.border = "1px solid rgba(255,255,255,0.18)";
-        navPillRef.current.style.boxShadow =
-          `0 ${8 + p * 8}px ${40 + p * 20}px rgba(0,0,0,${0.28 + p * 0.12})`;
-      } else {
-        navPillRef.current.style.background    = "rgba(255,255,255,0.97)";
-        navPillRef.current.style.backdropFilter = "blur(40px)";
-        navPillRef.current.style.WebkitBackdropFilter = "blur(40px)";
-        navPillRef.current.style.border        = "1px solid rgba(0,0,0,0.07)";
-        navPillRef.current.style.boxShadow     = "0 4px 32px rgba(0,0,0,0.12)";
+      if (navPillRef.current) Object.assign(navPillRef.current.style, GLASS);
+      if (ctaRef.current) {
+        Object.assign(ctaRef.current.style, GLASS);
+        ctaRef.current.style.color     = "rgba(255,255,255,0.90)";
+        ctaRef.current.style.boxShadow = "none";
       }
+      linksRef.current.forEach(el => {
+        if (!el) return;
+        el.style.color      = "rgba(255,255,255,0.85)";
+        el.style.background = "transparent";
+      });
     };
 
+    const applySticky = () => {
+      if (!headerRef.current) return;
+      headerRef.current.style.background           = "rgba(255,255,255,0.97)";
+      headerRef.current.style.boxShadow            = "0 1px 20px rgba(0,0,0,0.08)";
+      headerRef.current.style.backdropFilter       = "blur(20px)";
+      headerRef.current.style.WebkitBackdropFilter = "blur(20px)";
+      headerRef.current.style.paddingTop           = "8px";
+
+      if (navPillRef.current) {
+        navPillRef.current.style.background           = "transparent";
+        navPillRef.current.style.border               = "none";
+        navPillRef.current.style.backdropFilter       = "none";
+        navPillRef.current.style.WebkitBackdropFilter = "none";
+        navPillRef.current.style.boxShadow            = "none";
+      }
+      if (ctaRef.current) {
+        ctaRef.current.style.background           = "#D11E27";
+        ctaRef.current.style.border               = "none";
+        ctaRef.current.style.backdropFilter       = "none";
+        ctaRef.current.style.WebkitBackdropFilter = "none";
+        ctaRef.current.style.color                = "white";
+        ctaRef.current.style.boxShadow            = "none";
+      }
+      linksRef.current.forEach(el => {
+        if (!el) return;
+        el.style.color      = "rgba(26,29,36,0.70)";
+        el.style.background = "transparent";
+      });
+    };
+
+    const onScroll = () => {
+      const past = window.scrollY > window.innerHeight * 0.80;
+      if (past && !stickyRef.current)  { stickyRef.current = true;  setIsSticky(true);  applySticky(); }
+      if (!past && stickyRef.current)  { stickyRef.current = false; setIsSticky(false); applyHero();   }
+    };
+
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const barColor = isSticky ? "#1A1D24" : "white";
+
   return (
-    <header
-      ref={headerRef}
-      className="fixed top-0 inset-x-0 z-[100] flex flex-col items-center pt-5 gap-2"
-      style={{ opacity: 0 }}
-    >
-      {/* ── Logo flotante — protagonista ── */}
-      <div ref={floatingLogoRef}>
+    <>
+      {/* ── Header ── */}
+      <header
+        ref={headerRef}
+        className="fixed top-0 inset-x-0 z-[100] flex items-center justify-between px-5 sm:px-8 lg:px-[133px]"
+        style={{
+          opacity: 0,
+          paddingTop: HERO_PT,
+          paddingBottom: "8px",
+          transition: "background 0.4s ease, box-shadow 0.4s ease, padding-top 0.4s ease",
+        }}
+      >
+        {/* Logo */}
         <img
           src="/rentahouse-maye.svg"
           alt="Rent-A-House"
-          className="h-16 md:h-20 w-auto"
-          style={{ filter: "drop-shadow(0 4px 24px rgba(0,0,0,0.45))" }}
+          className="h-14 sm:h-16 lg:h-[88px] w-auto shrink-0"
+          style={{ filter: "drop-shadow(0 2px 16px rgba(0,0,0,0.40))" }}
           draggable="false"
         />
-      </div>
 
-      {/* ── Navbar pill — soporte visual ── */}
-      <div
-        ref={navPillRef}
-        className="flex items-center gap-5 px-5 py-2.5 rounded-2xl transition-[box-shadow] duration-500"
-        style={{
-          background: "linear-gradient(135deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.05) 100%)",
-          border: "1px solid rgba(255,255,255,0.18)",
-          boxShadow: "0 8px 40px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.22)",
-          backdropFilter: "blur(28px)",
-          WebkitBackdropFilter: "blur(28px)",
-        }}
-      >
-        {/* Logo interno — entra en scroll */}
+        {/* Nav pill — desktop only */}
         <div
-          ref={navLogoWrapperRef}
-          className="overflow-hidden shrink-0"
-          style={{ maxWidth: 0, opacity: 0 }}
+          ref={navPillRef}
+          className="hidden lg:flex items-center rounded-full"
+          style={{ ...GLASS, padding: "5px" }}
         >
-          <img
-            src="/rentahouse-maye.svg"
-            alt="Rent-A-House"
-            className="h-8 w-auto pr-1"
-            draggable="false"
-          />
-        </div>
-
-        {/* Separador logo interno / links */}
-        <div
-          ref={separatorRef}
-          className="h-5 w-px shrink-0 overflow-hidden"
-          style={{ maxWidth: 0, opacity: 0, background: "rgba(0,0,0,0.10)" }}
-        />
-
-        {/* Links */}
-        <nav className="hidden md:flex items-center gap-6">
-          {NAV_LINKS.map(({ label, href }) => (
+          {NAV_LINKS.map(({ label, href }, i) => (
             <a
               key={label}
               href={href}
-              className="relative text-[9px] font-black uppercase tracking-[0.35em] transition-colors duration-300 group nav-link"
-              style={{ color: "rgba(255,255,255,0.72)" }}
-              onMouseEnter={e => { e.currentTarget.style.color = "white"; }}
-              onMouseLeave={e => {
-                const p = Math.min(window.scrollY / 280, 1);
-                e.currentTarget.style.color = p > 0.65 ? "rgba(30,30,30,0.78)" : "rgba(255,255,255,0.72)";
+              ref={el => { linksRef.current[i] = el; }}
+              style={{
+                fontFamily:     "'Manrope', sans-serif",
+                fontSize:       "11px",
+                fontWeight:     600,
+                letterSpacing:  "0.14em",
+                textTransform:  "uppercase",
+                padding:        "9px 18px",
+                borderRadius:   "999px",
+                color:          "rgba(255,255,255,0.85)",
+                background:     "transparent",
+                textDecoration: "none",
+                display:        "block",
+                transition:     "background 0.2s, color 0.2s",
+                whiteSpace:     "nowrap",
               }}
+              onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.14)"; e.currentTarget.style.color = "white"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "rgba(255,255,255,0.85)"; }}
             >
               {label}
-              <span className="absolute -bottom-0.5 left-0 w-0 h-px rounded-full bg-current group-hover:w-full transition-all duration-300" />
+            </a>
+          ))}
+        </div>
+
+        {/* CTA — desktop only */}
+        <a
+          ref={ctaRef}
+          href="https://wa.me/584141210496"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hidden lg:flex shrink-0 items-center gap-1.5 rounded-full whitespace-nowrap active:scale-95"
+          style={{
+            ...GLASS,
+            fontFamily:     "'Manrope', sans-serif",
+            fontSize:       "11px",
+            fontWeight:     600,
+            letterSpacing:  "0.14em",
+            textTransform:  "uppercase",
+            padding:        "9px 20px",
+            color:          "rgba(255,255,255,0.90)",
+            textDecoration: "none",
+            transition:     "background 0.2s, color 0.2s",
+          }}
+          onMouseEnter={e => { e.currentTarget.style.opacity = "0.85"; }}
+          onMouseLeave={e => { e.currentTarget.style.opacity = "1"; }}
+        >
+          Contactar
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 5 19 12 13 19"/>
+          </svg>
+        </a>
+
+        {/* Hamburger — tablet + mobile */}
+        <button
+          className="lg:hidden flex flex-col justify-center items-center gap-[5px] w-10 h-10 rounded-full shrink-0"
+          style={{
+            background:           isSticky ? "rgba(26,29,36,0.06)" : "rgba(255,255,255,0.10)",
+            border:               isSticky ? "1px solid rgba(26,29,36,0.12)" : "1px solid rgba(255,255,255,0.20)",
+            backdropFilter:       "blur(14px)",
+            WebkitBackdropFilter: "blur(14px)",
+            cursor:               "pointer",
+            transition:           "background 0.3s, border 0.3s",
+          }}
+          onClick={() => setMenuOpen(o => !o)}
+          aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+        >
+          <span style={{ display: "block", width: "16px", height: "1.5px", background: barColor, borderRadius: "2px", transition: "transform 0.3s ease, background 0.3s", transform: menuOpen ? "translateY(6.5px) rotate(45deg)" : "none" }} />
+          <span style={{ display: "block", width: "16px", height: "1.5px", background: barColor, borderRadius: "2px", transition: "opacity 0.3s ease, background 0.3s",  opacity: menuOpen ? 0 : 1 }} />
+          <span style={{ display: "block", width: "16px", height: "1.5px", background: barColor, borderRadius: "2px", transition: "transform 0.3s ease, background 0.3s", transform: menuOpen ? "translateY(-6.5px) rotate(-45deg)" : "none" }} />
+        </button>
+      </header>
+
+      {/* ── Mobile / Tablet overlay menu ── */}
+      <div
+        className="lg:hidden fixed inset-0 z-[99] flex flex-col items-center justify-center"
+        style={{
+          background:           "rgba(10,12,18,0.97)",
+          backdropFilter:       "blur(24px)",
+          WebkitBackdropFilter: "blur(24px)",
+          opacity:              menuOpen ? 1 : 0,
+          pointerEvents:        menuOpen ? "all" : "none",
+          transition:           "opacity 0.35s ease",
+        }}
+      >
+        {/* Nav links */}
+        <nav style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
+          {NAV_LINKS.map(({ label, href }, i) => (
+            <a
+              key={label}
+              href={href}
+              onClick={() => setMenuOpen(false)}
+              style={{
+                fontFamily:    "'Newsreader', Georgia, serif",
+                fontSize:      "clamp(28px,7vw,44px)",
+                fontWeight:    400,
+                fontStyle:     "italic",
+                color:         "rgba(255,255,255,0.82)",
+                textDecoration:"none",
+                letterSpacing: "-0.02em",
+                lineHeight:    1.35,
+                display:       "block",
+                textAlign:     "center",
+                padding:       "4px 24px",
+                opacity:       menuOpen ? 1 : 0,
+                transform:     menuOpen ? "translateY(0)" : "translateY(18px)",
+                transition:    `opacity 0.4s ease ${i * 0.07}s, transform 0.4s ease ${i * 0.07}s`,
+              }}
+              onMouseEnter={e => { e.currentTarget.style.color = "white"; }}
+              onMouseLeave={e => { e.currentTarget.style.color = "rgba(255,255,255,0.82)"; }}
+            >
+              {label}
             </a>
           ))}
         </nav>
 
-        <div className="h-5 w-px shrink-0" style={{ background: "rgba(255,255,255,0.15)" }} />
+        {/* Divider */}
+        <div style={{ width: "40px", height: "1px", background: "linear-gradient(90deg, transparent, rgba(209,30,39,0.55), transparent)", margin: "28px 0" }} />
 
-        {/* CTA — oscuro, discreto */}
+        {/* CTA */}
         <a
           href="https://wa.me/584141210496"
           target="_blank"
           rel="noopener noreferrer"
-          className="shrink-0 text-[8.5px] font-black uppercase tracking-[0.3em] px-5 py-2 rounded-xl text-white whitespace-nowrap transition-all duration-300 active:scale-95"
+          onClick={() => setMenuOpen(false)}
           style={{
-            background: "linear-gradient(135deg, #7C1D1D 0%, #6B1A1A 100%)",
-            boxShadow: "0 0 10px rgba(100,20,20,0.25)",
+            fontFamily:    "'Manrope', sans-serif",
+            fontSize:      "11px",
+            fontWeight:    700,
+            letterSpacing: "0.24em",
+            textTransform: "uppercase",
+            color:         "white",
+            textDecoration:"none",
+            background:    "#D11E27",
+            padding:       "14px 44px",
+            borderRadius:  "999px",
+            opacity:       menuOpen ? 1 : 0,
+            transform:     menuOpen ? "translateY(0)" : "translateY(18px)",
+            transition:    `opacity 0.4s ease ${NAV_LINKS.length * 0.07 + 0.08}s, transform 0.4s ease ${NAV_LINKS.length * 0.07 + 0.08}s`,
           }}
-          onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 0 18px rgba(100,20,20,0.45)"; }}
-          onMouseLeave={e => { e.currentTarget.style.boxShadow = "0 0 10px rgba(100,20,20,0.25)"; }}
         >
-          Contactar
+          Contactar →
         </a>
       </div>
-    </header>
+    </>
   );
 }

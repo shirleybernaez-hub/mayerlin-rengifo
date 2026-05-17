@@ -3,104 +3,98 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+const SANS  = "'Manrope', sans-serif";
+const SERIF = "'Newsreader', Georgia, serif";
+const INK   = "#1A1D24";
+const MUTED = "#7A6F63";
+const RED   = "#D11E27";
+const GREEN = "#1A8E3B";
+
 const PROPERTIES = [
   {
     id: 1,
-    title: "Penthouse La Castellana",
-    price: "$250,000",
-    tag: "Venta",
-    details: "4 Hab · 5 Baños · 350m²",
-    image: "https://images.unsplash.com/photo-1600607687940-c52df0bd437b?q=80&w=2070",
+    zone: "Las Mercedes",
+    title: "PH con terraza",
+    tag: "Alquiler",
+    price: "$1,850/mes",
+    beds: 3, baths: 2.5, sqm: 180,
+    image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=500&fit=crop",
   },
   {
     id: 2,
-    title: "Villa Moderna Los Chorros",
-    price: "$480,000",
+    zone: "Los Palos Grandes",
+    title: "Loft restaurado",
     tag: "Venta",
-    details: "5 Hab · 6 Baños · 600m²",
-    image: "https://images.unsplash.com/photo-1600566753190-17f0bb2a6c3e?q=80&w=2070",
+    price: "$420,000",
+    beds: 2, baths: 2, sqm: 95,
+    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=500&fit=crop",
   },
   {
     id: 3,
-    title: "Apartamento Country Club",
-    price: "$3,800/mes",
+    zone: "La Lagunita",
+    title: "Casa con jardín",
     tag: "Alquiler",
-    details: "3 Hab · 3 Baños · 220m²",
-    image: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=2070",
+    price: "$3,200/mes",
+    beds: 4, baths: 3, sqm: 280,
+    image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=500&fit=crop",
   },
   {
     id: 4,
-    title: "Casa de Campo Galipán",
-    price: "$320,000",
+    zone: "Altamira",
+    title: "Local comercial",
     tag: "Venta",
-    details: "6 Hab · 4 Baños · 800m²",
-    image: "https://images.unsplash.com/photo-1598928636135-d146006ff4be?q=80&w=2070",
+    price: "$295,000",
+    sqm: 120, levels: 2,
+    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=500&fit=crop",
+  },
+  {
+    id: 5,
+    zone: "La Castellana",
+    title: "Penthouse ejecutivo",
+    tag: "Venta",
+    price: "$250,000",
+    beds: 4, baths: 5, sqm: 350,
+    image: "https://images.unsplash.com/photo-1600607687940-c52df0bd437b?w=800&h=500&fit=crop",
+  },
+  {
+    id: 6,
+    zone: "El Rosal",
+    title: "Apartamento moderno",
+    tag: "Alquiler",
+    price: "$1,200/mes",
+    beds: 2, baths: 2, sqm: 110,
+    image: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=500&fit=crop",
   },
 ];
 
 export default function PropertyGrid() {
   const sectionRef = useRef(null);
-  const headingRef = useRef(null);
-  const labelRef   = useRef(null);
+  const headerRef  = useRef(null);
   const cardsRef   = useRef([]);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-
-      /* ── SECTION HEADER: clip-path slide-up ── */
-      gsap.fromTo(headingRef.current,
-        { y: 80, opacity: 0, clipPath: "inset(0 0 100% 0)" },
-        {
-          y: 0,
-          opacity: 1,
-          clipPath: "inset(0 0 0% 0)",
-          duration: 1.2,
-          ease: "expo.out",
-          scrollTrigger: { trigger: headingRef.current, start: "top 85%" },
-        }
-      );
-      gsap.fromTo(labelRef.current,
-        { opacity: 0, y: 16 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.9,
-          ease: "power2.out",
-          scrollTrigger: { trigger: headingRef.current, start: "top 88%" },
-        }
+      gsap.fromTo(headerRef.current,
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, ease: "expo.out",
+          scrollTrigger: { trigger: headerRef.current, start: "top bottom", toggleActions: "play none none none" } }
       );
 
-      /* ── CARDS: staggered 3D perspective entrance ── */
       cardsRef.current.forEach((card, i) => {
         if (!card) return;
         const imgEl = card.querySelector(".parallax-img");
 
-        // Card entrance
         gsap.fromTo(card,
+          { opacity: 0, y: 50 },
           {
-            opacity: 0,
-            y: 80,
-            rotateX: 10,
-            transformOrigin: "center bottom",
-          },
-          {
-            opacity: 1,
-            y: 0,
-            rotateX: 0,
-            duration: 1.1,
-            ease: "expo.out",
-            scrollTrigger: {
-              trigger: card,
-              start: "top 88%",
-              toggleActions: "play none none none",
-            },
-            delay: (i % 2) * 0.18,
+            opacity: 1, y: 0, duration: 1, ease: "expo.out",
+            scrollTrigger: { trigger: card, start: "top 92%", toggleActions: "play none none none" },
+            delay: (i % 3) * 0.1,
           }
         );
 
-        // Image parallax inside card
         if (imgEl) {
           ScrollTrigger.create({
             trigger: card,
@@ -108,12 +102,11 @@ export default function PropertyGrid() {
             end: "bottom top",
             scrub: 1.5,
             onUpdate(self) {
-              gsap.set(imgEl, { y: (self.progress - 0.5) * 70 });
+              gsap.set(imgEl, { y: (self.progress - 0.5) * 60 });
             },
           });
         }
       });
-
     }, sectionRef);
 
     return () => ctx.revert();
@@ -123,88 +116,138 @@ export default function PropertyGrid() {
     <section
       id="propiedades"
       ref={sectionRef}
-      className="relative bg-[#f8f6f3] py-28 px-6 md:px-16 overflow-hidden scene-3d"
+      style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0) 0px, rgba(255,255,255,0.60) 80px, #ffffff 200px)", paddingTop: "40px", paddingBottom: "80px", marginTop: "-240px", position: "relative", zIndex: 2 }}
     >
-
-      {/* Section Header — editorial style */}
-      <div className="max-w-7xl mx-auto mb-20">
-        {/* Tagline */}
-        <div ref={labelRef} className="opacity-0 flex items-center gap-3 mb-6">
-          <div className="h-px w-12 bg-gradient-to-r from-[#E20613] to-transparent" />
-          <span className="text-[9px] font-black uppercase tracking-[0.65em] text-neutral-400">
-            Inmuebles exclusivos · Rent-A-House
-          </span>
+      {/* Header */}
+      <div
+        ref={headerRef}
+        style={{
+          padding: "40px 133px 28px",
+          opacity: 0,
+          display: "flex",
+          alignItems: "flex-end",
+          justifyContent: "space-between",
+        }}
+      >
+        <div>
+          <p style={{
+            fontFamily: SANS, fontSize: "10px", fontWeight: 700,
+            letterSpacing: "0.28em", textTransform: "uppercase",
+            color: RED, marginBottom: "6px",
+          }}>
+            Lo más destacado
+          </p>
+          <h2 style={{
+            fontFamily: SERIF, fontSize: "clamp(28px,3.5vw,46px)",
+            fontWeight: 400, fontStyle: "italic",
+            color: INK, margin: 0, lineHeight: 1.1,
+          }}>
+            Explora nuevos inmuebles
+          </h2>
         </div>
-
-        {/* Heading — serif italic matching Testimonials */}
-        <h2
-          ref={headingRef}
-          className="opacity-0 text-[clamp(34px,5.5vw,66px)] font-serif italic text-neutral-900 leading-tight tracking-tight"
+        <a
+          href="#"
+          style={{
+            fontFamily: SANS, fontSize: "12px", fontWeight: 600,
+            color: INK, textDecoration: "none",
+            borderBottom: "1px solid rgba(26,29,36,0.25)",
+            paddingBottom: "2px",
+            whiteSpace: "nowrap",
+          }}
         >
-          Inmuebles<br />
-          <span className="inline-block">
-            destacados.
-            <span className="block h-[6px] mt-3 bg-gradient-to-r from-[#E20613] to-transparent rounded-sm" />
-          </span>
-        </h2>
+          Ver todas →
+        </a>
       </div>
 
-      {/* Cards Grid */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
+      {/* 6-card grid */}
+      <div
+        style={{
+          padding: "0 133px",
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: "20px",
+        }}
+      >
         {PROPERTIES.map((prop, i) => (
           <div
             key={prop.id}
             ref={(el) => { cardsRef.current[i] = el; }}
-            className="group cursor-pointer opacity-0"
-            style={{ perspective: "1000px" }}
+            style={{
+              opacity: 0,
+              background: "#fff",
+              borderRadius: "14px",
+              border: "1px solid rgba(26,29,36,0.07)",
+              boxShadow: "0 12px 30px -12px rgba(20,18,15,0.22), 0 1px 0 rgba(26,29,36,0.04)",
+              overflow: "hidden",
+              cursor: "pointer",
+            }}
           >
-            {/* Image container with overflow for parallax */}
-            <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-neutral-200 shadow-[0_20px_60px_rgba(0,0,0,0.15)]">
+            {/* Image */}
+            <div style={{ position: "relative", overflow: "hidden", height: "180px" }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={prop.image}
                 alt={prop.title}
-                className="parallax-img w-full h-[115%] object-cover -top-[7.5%] absolute inset-x-0 grayscale-[30%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out will-change-transform"
+                className="parallax-img"
+                style={{
+                  position: "absolute", inset: 0,
+                  width: "100%", height: "115%", top: "-7.5%",
+                  objectFit: "cover",
+                  willChange: "transform",
+                  transition: "transform 0.6s ease",
+                }}
                 draggable="false"
               />
-
-              {/* Cinematic overlay on hover */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-              {/* Price badge */}
-              <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full shadow-lg">
-                <span className="text-[11px] font-black text-neutral-900 tracking-tight">
-                  {prop.price}
-                </span>
-              </div>
-
               {/* Tag */}
-              <div className="absolute top-4 right-4 bg-[#E20613] px-3 py-1.5 rounded-full shadow-[0_0_20px_rgba(226,6,19,0.4)]">
-                <span className="text-[9px] font-black text-white uppercase tracking-widest">
-                  {prop.tag}
-                </span>
-              </div>
-
-              {/* Hover CTA */}
-              <div className="absolute bottom-5 left-0 right-0 flex justify-center opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
-                <span className="text-[9px] font-black text-white uppercase tracking-[0.3em] border border-white/50 px-6 py-2.5 rounded-full backdrop-blur-sm">
-                  Ver Detalles
-                </span>
-              </div>
+              <span style={{
+                position: "absolute", top: "10px", left: "10px",
+                background: RED, color: "white",
+                padding: "4px 10px", borderRadius: "99px",
+                fontFamily: SANS, fontSize: "9px", fontWeight: 800,
+                textTransform: "uppercase", letterSpacing: "0.10em",
+              }}>
+                {prop.tag}
+              </span>
             </div>
 
-            {/* Card footer */}
-            <div className="mt-5 flex items-start justify-between">
-              <div>
-                <h3 className="text-xl font-black uppercase tracking-[-0.02em] text-neutral-900 leading-tight group-hover:text-[#E20613] transition-colors duration-300">
-                  {prop.title}
-                </h3>
-                <p className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-400">
-                  {prop.details}
-                </p>
-              </div>
-              <div className="mt-1 h-8 w-8 rounded-full border border-neutral-200 flex items-center justify-center group-hover:bg-[#E20613] group-hover:border-[#E20613] transition-all duration-300 shrink-0">
-                <span className="text-neutral-400 group-hover:text-white text-sm transition-colors duration-300">
-                  →
+            {/* Card body */}
+            <div style={{ padding: "14px 16px 16px" }}>
+              <p style={{
+                fontFamily: SANS, fontSize: "9px", fontWeight: 700,
+                textTransform: "uppercase", letterSpacing: "0.22em",
+                color: MUTED, marginBottom: "5px",
+              }}>
+                {prop.zone}
+              </p>
+              <p style={{
+                fontFamily: SERIF, fontSize: "17px", fontWeight: 400,
+                color: INK, marginBottom: "6px", lineHeight: 1.2,
+              }}>
+                {prop.title}
+              </p>
+              <p style={{
+                fontFamily: SANS, fontSize: "11px", color: MUTED,
+                marginBottom: "10px", lineHeight: 1,
+              }}>
+                {prop.beds ? `${prop.beds} hab · ` : ""}
+                {prop.baths ? `${prop.baths} baños · ` : ""}
+                {prop.sqm ? `${prop.sqm} m²` : ""}
+                {prop.levels ? ` · ${prop.levels} niveles` : ""}
+              </p>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <span style={{ fontFamily: SANS, fontWeight: 700, fontSize: "15px", color: INK }}>
+                  {prop.price}
+                </span>
+                <span style={{
+                  display: "flex", alignItems: "center", gap: "5px",
+                  fontFamily: SANS, fontSize: "10px", fontWeight: 600, color: GREEN,
+                }}>
+                  <span style={{
+                    width: "6px", height: "6px", borderRadius: "50%",
+                    background: GREEN, display: "inline-block",
+                    flexShrink: 0,
+                  }} />
+                  Disponible
                 </span>
               </div>
             </div>
@@ -212,10 +255,19 @@ export default function PropertyGrid() {
         ))}
       </div>
 
-      {/* Bottom CTA */}
-      <div className="max-w-7xl mx-auto mt-16 flex justify-center">
-        <button className="text-[10px] font-black uppercase tracking-[0.35em] border border-neutral-300 px-12 py-4 rounded-full hover:bg-neutral-900 hover:text-white hover:border-neutral-900 transition-all duration-400">
-          Ver Todos los Inmuebles
+      {/* CTA */}
+      <div style={{ display: "flex", justifyContent: "center", marginTop: "48px" }}>
+        <button style={{
+          fontFamily: SANS, fontSize: "10px", fontWeight: 800,
+          textTransform: "uppercase", letterSpacing: "0.30em",
+          border: "1px solid rgba(26,29,36,0.20)", padding: "14px 48px",
+          borderRadius: "999px", cursor: "pointer", background: "transparent",
+          color: INK, transition: "background 0.2s, color 0.2s",
+        }}
+          onMouseEnter={e => { e.currentTarget.style.background = INK; e.currentTarget.style.color = "white"; }}
+          onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = INK; }}
+        >
+          Ver todos los inmuebles
         </button>
       </div>
     </section>

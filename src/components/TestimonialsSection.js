@@ -147,26 +147,20 @@ export default function TestimonialsSection() {
   }, []);
 
   return (
-    <section id="testimonios" ref={sectionRef} className="relative bg-white">
+    <section id="testimonios" ref={sectionRef} className="relative" style={{ background: "#EDE9E3" }}>
 
 
       {/* ── Section header ── */}
-      <div className="relative max-w-7xl mx-auto px-6 md:px-16 pt-20 md:pt-28 pb-8">
-        <div ref={labelRef} className="opacity-0 flex items-center gap-3 mb-6">
-          <div className="h-px w-12 bg-gradient-to-r from-[#E20613] to-transparent" />
-          <span className="text-[9px] font-black uppercase tracking-[0.65em] text-neutral-400">
-            Testimonios · Clientes satisfechos
-          </span>
-        </div>
+      <div className="relative pt-20 md:pt-28 pb-8" style={{ paddingLeft: "133px", paddingRight: "133px" }}>
+        <p ref={labelRef} className="opacity-0" style={{ fontFamily: "'Manrope', sans-serif", fontSize: "10px", fontWeight: 700, letterSpacing: "0.28em", textTransform: "uppercase", color: "#E20613", margin: "0 0 6px" }}>
+          Testimonios
+        </p>
         <h2
           ref={headingRef}
-          className="opacity-0 text-[clamp(34px,5.5vw,66px)] font-serif italic text-neutral-900 leading-tight tracking-tight"
+          className="opacity-0"
+          style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "clamp(28px,3.5vw,46px)", fontWeight: 400, fontStyle: "italic", color: "#1A1D24", margin: 0, lineHeight: 1.1 }}
         >
-          Lo que dicen<br />
-          <span className="inline-block text-neutral-900">
-            nuestros clientes.
-            <span className="block h-[6px] mt-3 bg-gradient-to-r from-[#E20613] to-transparent rounded-sm" />
-          </span>
+          Lo que dicen los clientes
         </h2>
       </div>
 
