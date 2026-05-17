@@ -3,11 +3,13 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+const BOX_HEIGHT = "58px";
+
 const FieldBox = ({ children }) => (
   <div
     className="flex items-center rounded-xl px-3 min-w-0"
-    style={{ minHeight: "54px" }}
     style={{
+      height: BOX_HEIGHT,
       background: "rgba(255,255,255,0.08)",
       border: "1px solid rgba(255,255,255,0.22)",
       backdropFilter: "blur(10px)",
@@ -19,9 +21,9 @@ const FieldBox = ({ children }) => (
 );
 
 const LabelRow = ({ labels }) => (
-  <div className="grid grid-cols-5 gap-2 mb-1 px-1">
-    {labels.map((l) => (
-      <span key={l} className="text-[8px] font-black uppercase tracking-[0.3em] text-white/90 whitespace-nowrap truncate">
+  <div className="grid grid-cols-5 gap-2 mb-1.5 px-1">
+    {labels.map((l, i) => (
+      <span key={i} className="text-[8px] font-black uppercase tracking-[0.28em] text-white/85 whitespace-nowrap truncate">
         {l}
       </span>
     ))}
@@ -40,18 +42,16 @@ const SelectBox = ({ label, options }) => (
           <option key={o} value={o.toLowerCase()} className="text-neutral-900 bg-white">{o}</option>
         ))}
       </select>
-      <svg
-        className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none shrink-0"
+      <svg className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none shrink-0"
         width="14" height="14" viewBox="0 0 24 24"
-        fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="2.5"
-      >
+        fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="2.5">
         <polyline points="6 9 12 15 18 9"/>
       </svg>
     </div>
   </FieldBox>
 );
 
-const InputBox = ({ label, placeholder }) => (
+const InputBox = ({ placeholder }) => (
   <FieldBox>
     <input
       type="text"
@@ -76,7 +76,8 @@ export default function HeroSection() {
 
     const ctx = gsap.context(() => {
 
-      const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
+      /* delay sincronizado con el fin del overlay del navbar (~4.7s) */
+      const tl = gsap.timeline({ defaults: { ease: "expo.out" }, delay: 4.5 });
 
       tl
         .fromTo(skyRef.current,
@@ -85,28 +86,28 @@ export default function HeroSection() {
         )
         .fromTo(houseRef.current,
           { y: 90, opacity: 0 },
-          { y: 0, opacity: 1, duration: 1.5, ease: "expo.out" },
+          { y: 0,  opacity: 1, duration: 1.5, ease: "expo.out" },
           "-=1.8"
         )
         .fromTo(searchRef.current,
           { opacity: 0, y: 36, scale: 0.97 },
-          { opacity: 1, y: 0, scale: 1, duration: 1.1, ease: "expo.out" },
+          { opacity: 1, y: 0,  scale: 1,    duration: 1.1, ease: "expo.out" },
           "-=0.3"
         )
         .fromTo(verMasRef.current,
           { opacity: 0, y: 14 },
-          { opacity: 1, y: 0, duration: 0.8 },
+          { opacity: 1, y: 0,  duration: 0.8 },
           "-=0.5"
         )
         .fromTo(arrowRef.current,
           { opacity: 0, y: -6 },
-          { opacity: 1, y: 0, duration: 0.5 },
+          { opacity: 1, y: 0,  duration: 0.5 },
           "-=0.35"
         );
 
       gsap.to(arrowRef.current, {
         y: 7, repeat: -1, yoyo: true,
-        duration: 0.9, ease: "power1.inOut", delay: 3.2,
+        duration: 0.9, ease: "power1.inOut", delay: 7.0,
       });
 
       ScrollTrigger.create({
@@ -141,28 +142,26 @@ export default function HeroSection() {
         <img src="/cielorentahouse.png" alt="" className="w-full h-full object-cover object-top" draggable="false" />
       </div>
 
-      {/* Quinta */}
+      {/* Quinta — entra de abajo hacia arriba */}
       <div ref={houseRef} className="absolute inset-x-0 bottom-0 z-10 will-change-transform" style={{ opacity: 0 }}>
         <img src="/quintahouse.png" alt="Rent-A-House" className="w-full object-contain object-bottom" draggable="false" />
       </div>
 
       {/* Viñeta */}
-      <div ref={overlayRef} className="absolute inset-0 z-20 pointer-events-none" style={{ background: "radial-gradient(ellipse 90% 80% at 50% 50%, transparent 20%, rgba(0,0,0,0.65) 100%)", opacity: 0.15 }} />
+      <div ref={overlayRef} className="absolute inset-0 z-20 pointer-events-none"
+        style={{ background: "radial-gradient(ellipse 90% 80% at 50% 50%, transparent 20%, rgba(0,0,0,0.65) 100%)", opacity: 0.15 }} />
 
       {/* Degradado inferior */}
-      <div className="absolute inset-x-0 bottom-0 z-20 pointer-events-none h-72" style={{ background: "linear-gradient(to top, rgba(4,4,6,0.92) 0%, transparent 100%)" }} />
+      <div className="absolute inset-x-0 bottom-0 z-20 pointer-events-none h-72"
+        style={{ background: "linear-gradient(to top, rgba(4,4,6,0.92) 0%, transparent 100%)" }} />
 
-      {/* Contenido — centrado verticalmente en la mitad inferior */}
-      <div
-        ref={contentRef}
-        className="absolute z-30 inset-x-0 flex flex-col items-center gap-4 px-4 md:px-10 will-change-transform"
-        style={{ top: "50%", transform: "translateY(5%)" }}
-      >
+      {/* Contenido */}
+      <div ref={contentRef} className="absolute z-30 inset-x-0 flex flex-col items-center gap-4 px-4 md:px-10 will-change-transform"
+        style={{ top: "50%", transform: "translateY(5%)" }}>
 
         {/* Buscador */}
         <div ref={searchRef} className="w-full max-w-5xl" style={{ opacity: 0 }}>
-          <div
-            className="w-full rounded-2xl p-4"
+          <div className="w-full rounded-2xl p-4"
             style={{
               background: "rgba(8,8,12,0.30)",
               border: "1px solid rgba(255,255,255,0.13)",
@@ -171,33 +170,29 @@ export default function HeroSection() {
               WebkitBackdropFilter: "blur(32px)",
             }}
           >
-            {/* Labels fila 1 */}
+            {/* Fila 1 */}
             <LabelRow labels={["Tipo de Propiedad", "Operación", "Ciudad", "Urbanización", "Dormitorios"]} />
-
-            {/* Fila 1 — grid 5 columnas iguales */}
             <div className="grid grid-cols-5 gap-2 mb-4">
               <SelectBox label="Tipo de Propiedad" options={["Casa", "Apartamento", "Quinta", "Local Comercial", "Terreno", "Oficina"]} />
-              <SelectBox label="Operación" options={["Venta", "Alquiler"]} />
-              <SelectBox label="Ciudad" options={["Caracas", "Valencia", "Maracaibo", "Barquisimeto", "Maracay"]} />
-              <SelectBox label="Urbanización" options={["La Castellana", "Los Chorros", "Country Club", "Altamira", "Las Mercedes"]} />
-              <SelectBox label="Dormitorios" options={["1", "2", "3", "4", "5+"]} />
+              <SelectBox label="Operación"         options={["Venta", "Alquiler"]} />
+              <SelectBox label="Ciudad"            options={["Caracas", "Valencia", "Maracaibo", "Barquisimeto", "Maracay"]} />
+              <SelectBox label="Urbanización"      options={["La Castellana", "Los Chorros", "Country Club", "Altamira", "Las Mercedes"]} />
+              <SelectBox label="Dormitorios"       options={["1", "2", "3", "4", "5+"]} />
             </div>
 
-            {/* Labels fila 2 */}
+            {/* Fila 2 */}
             <LabelRow labels={["Baños", "Precio Mínimo", "Precio Máximo", "Código Flex", ""]} />
-
-            {/* Fila 2 — grid 5 columnas iguales (4 campos + botón) */}
             <div className="grid grid-cols-5 gap-2">
-              <SelectBox label="Baños" options={["1", "2", "3", "4", "5+"]} />
-              <InputBox label="Precio Mínimo" placeholder="Precio Mínimo" />
-              <InputBox label="Precio Máximo" placeholder="Precio Máximo" />
-              <InputBox label="Código Flex" placeholder="Código Flex" />
+              <SelectBox label="Baños"  options={["1", "2", "3", "4", "5+"]} />
+              <InputBox placeholder="Precio Mínimo" />
+              <InputBox placeholder="Precio Máximo" />
+              <InputBox placeholder="Código Flex"   />
               <button
                 className="flex items-center justify-center gap-2 rounded-xl px-4 font-black text-[10px] uppercase tracking-[0.3em] text-white transition-all duration-300 hover:brightness-110 active:scale-95 whitespace-nowrap"
                 style={{
+                  height: BOX_HEIGHT,
                   background: "linear-gradient(135deg, #E20613 0%, #b00410 100%)",
                   boxShadow: "0 0 28px rgba(226,6,19,0.45)",
-                  minHeight: "52px",
                 }}
               >
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -211,11 +206,14 @@ export default function HeroSection() {
 
         {/* Ver más */}
         <div className="flex flex-col items-center gap-2 mt-2">
-          <a ref={verMasRef} href="#propiedades" className="text-[9px] uppercase tracking-[0.55em] text-white/70 font-bold hover:text-white transition-colors duration-300" style={{ opacity: 0 }}>
+          <a ref={verMasRef} href="#propiedades"
+            className="text-[9px] uppercase tracking-[0.55em] text-white/70 font-bold hover:text-white transition-colors duration-300"
+            style={{ opacity: 0 }}>
             Ver más
           </a>
           <div ref={arrowRef} style={{ opacity: 0 }}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/50">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/50">
               <polyline points="6 9 12 15 18 9"/>
             </svg>
           </div>
