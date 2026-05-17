@@ -18,7 +18,7 @@ const TESTIMONIALS = [
     name: "Valeria Torres",
     role: "Compradora · Primera vivienda",
     rating: 5,
-    text: "Mayerlin me guió en cada paso. Encontramos el apartamento ideal en Altamira dentro de mi presupuesto y sin complicaciones.",
+    text: "Mayerlin me guió en cada paso. Encontramos la casa ideal en Las Palmas dentro de mi presupuesto y sin complicaciones.",
     avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&fit=crop",
   },
   {
@@ -39,18 +39,14 @@ const TESTIMONIALS = [
   },
 ];
 
-const STAR_PATH = "M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.287 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.838-.197-1.54-1.118l1.287-3.957a1 1 0 00-.364-1.118L2.05 9.384c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69l1.286-3.957z";
-
-function ReviewStars({ rating }) {
-  const filled = Math.floor(rating);
+function CardLogo() {
   return (
-    <div className="flex items-center gap-0.5">
-      {[...Array(filled)].map((_, i) => (
-        <svg key={i} viewBox="0 0 20 20" fill="#E20613" className="w-4 h-4">
-          <path d={STAR_PATH} />
-        </svg>
-      ))}
-    </div>
+    <img
+      src="/rentahouse-maye.svg"
+      alt="Rent-A-House"
+      className="h-14 w-auto"
+      draggable="false"
+    />
   );
 }
 
@@ -131,14 +127,30 @@ export default function TestimonialsSection() {
       });
 
       // 300 px of scroll per time unit → each card gets 300px hold + 300px exit
-      ScrollTrigger.create({
-        trigger:    deckRef.current,
-        start:      "top top",
-        end:        `+=${total * SEG * 300}`,
-        pin:        true,
-        pinSpacing: true,
-        scrub:      1.4,
-        animation:  tl,
+      const mm = gsap.matchMedia();
+
+      mm.add("(max-width: 1023px)", () => {
+        ScrollTrigger.create({
+          trigger:    sectionRef.current,
+          start:      "top top",
+          end:        `+=${total * SEG * 300}`,
+          pin:        true,
+          pinSpacing: true,
+          scrub:      1.4,
+          animation:  tl,
+        });
+      });
+
+      mm.add("(min-width: 1024px)", () => {
+        ScrollTrigger.create({
+          trigger:    sectionRef.current,
+          start:      "top 40px",
+          end:        `+=${total * SEG * 300}`,
+          pin:        true,
+          pinSpacing: true,
+          scrub:      1.4,
+          animation:  tl,
+        });
       });
 
     }, sectionRef);
@@ -147,27 +159,28 @@ export default function TestimonialsSection() {
   }, []);
 
   return (
-    <section id="testimonios" ref={sectionRef} className="relative" style={{ background: "#EDE9E3" }}>
+    <section id="testimonios" ref={sectionRef} className="relative lg:mt-[25px] lg:pb-24" style={{ background: "#EDE9E3" }}>
 
 
       {/* ── Section header ── */}
-      <div className="relative pt-20 md:pt-28 pb-8" style={{ paddingLeft: "133px", paddingRight: "133px" }}>
+      <div className="relative pt-[115px] md:pt-28 pb-8 pl-[40px] pr-5 sm:pl-[52px] sm:pr-8 lg:pl-[153px] lg:pr-[133px] text-left">
         <p ref={labelRef} className="opacity-0" style={{ fontFamily: "'Manrope', sans-serif", fontSize: "10px", fontWeight: 700, letterSpacing: "0.28em", textTransform: "uppercase", color: "#E20613", margin: "0 0 6px" }}>
           Testimonios
         </p>
         <h2
           ref={headingRef}
-          className="opacity-0"
-          style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "clamp(28px,3.5vw,46px)", fontWeight: 400, fontStyle: "italic", color: "#1A1D24", margin: 0, lineHeight: 1.1 }}
+          className="opacity-0 text-[clamp(56px,12vw,96px)] lg:text-[clamp(28px,3.5vw,46px)]"
+          style={{ fontFamily: "'Newsreader', Georgia, serif", fontWeight: 400, fontStyle: "italic", color: "#1A1D24", margin: 0, lineHeight: 0.96 }}
         >
-          Lo que dicen los clientes
+          <span className="lg:hidden">Lo que dicen<br />los clientes</span>
+          <span className="hidden lg:inline">Lo que dicen los clientes</span>
         </h2>
       </div>
 
       {/* ── Card deck — GSAP pins this element to the viewport top ── */}
       <div
         ref={deckRef}
-        className="relative flex items-center justify-center min-h-screen"
+        className="relative flex items-center lg:items-start justify-center min-h-screen lg:min-h-[600px] mt-[-120px] md:mt-0 lg:mt-0 lg:pt-12"
       >
         {/* Overflow clip so swept cards don't spill into other sections */}
         <div className="relative h-[460px] w-[330px] sm:w-[390px]" style={{ overflow: "visible" }}>
@@ -181,7 +194,7 @@ export default function TestimonialsSection() {
               {/* Red top accent */}
               <div className="absolute top-0 left-10 right-10 h-px bg-gradient-to-r from-transparent via-[#E20613]/40 to-transparent" />
 
-              <ReviewStars rating={t.rating} />
+              <CardLogo />
 
               <blockquote className="flex-1 flex items-center text-center">
                 <p className="text-[14px] sm:text-[15px] font-serif italic text-neutral-600 leading-[1.8]">
@@ -208,8 +221,8 @@ export default function TestimonialsSection() {
         </div>
 
         {/* Card counter */}
-        <p className="absolute bottom-10 left-0 right-0 text-center text-[8px] font-black uppercase tracking-[0.4em] text-neutral-300">
-          desplaza para ver más
+        <p className="absolute bottom-8 lg:bottom-[7px] left-0 right-0 text-center text-[8px] font-black uppercase tracking-[0.4em] text-neutral-300 lg:text-[#E20613] lg:opacity-50">
+          desliza para ver testimonios
         </p>
       </div>
 

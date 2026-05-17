@@ -2,32 +2,29 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Instagram } from "lucide-react";
+import { Instagram, MapPin } from "lucide-react";
 
 const NAV = [
-  { label: "Inicio", id: "inicio" },
-  { label: "Nosotros", id: "nosotros" },
+  { label: "Inicio",      id: "inicio" },
+  { label: "Nosotros",    id: "nosotros" },
   { label: "Propiedades", id: "propiedades" },
   { label: "Testimonios", id: "testimonios" },
 ];
-const MARQUEE_TEXT = "RENT-A-HOUSE · MAYERLIN RENGIFO · ASESORA INMOBILIARIA · CARACAS, VENEZUELA · ";
 
 export default function Footer() {
-  const sectionRef  = useRef(null);
-  const megaRef     = useRef(null);
-  const glowRef     = useRef(null);
-  const shimmerRef  = useRef(null);
-  const logoRef     = useRef(null);
-  const accentRef   = useRef(null);
-  const navRef      = useRef(null);
-  const copyrightRef= useRef(null);
+  const sectionRef   = useRef(null);
+  const megaRef      = useRef(null);
+  const glowRef      = useRef(null);
+  const shimmerRef   = useRef(null);
+  const logoRef      = useRef(null);
+  const accentRef    = useRef(null);
+  const navRef       = useRef(null);
+  const copyrightRef = useRef(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-
-      /* ── ENTRANCE TIMELINE ── */
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -38,48 +35,35 @@ export default function Footer() {
       });
 
       tl
-        /* 1. Mega background text reveals from below */
         .fromTo(megaRef.current,
           { clipPath: "inset(0 0 100% 0)", opacity: 0 },
           { clipPath: "inset(0 0 0% 0)", opacity: 0.05, duration: 1.6 }
         )
-
-        /* 2. Red shimmer sweeps across (one-shot) */
         .call(() => {
           if (shimmerRef.current) {
             shimmerRef.current.style.animation = "shimmer 1.4s ease-in-out forwards";
           }
         }, [], "-=0.6")
-
-        /* 3. Logo emerges from blur */
         .fromTo(logoRef.current,
           { opacity: 0, scale: 0.82, filter: "blur(20px)" },
           { opacity: 0.93, scale: 1, filter: "blur(0px)", duration: 1.3 },
           "-=0.9"
         )
-
-        /* 4. Red accent line sweeps */
         .fromTo(accentRef.current,
           { scaleX: 0, transformOrigin: "center" },
           { scaleX: 1, duration: 0.8, ease: "power3.out" },
           "-=0.7"
         )
-
-        /* 5. Nav links stagger from below */
         .fromTo(navRef.current?.children ?? [],
           { opacity: 0, y: 22, filter: "blur(4px)" },
           { opacity: 1, y: 0, filter: "blur(0px)", stagger: 0.08, duration: 0.7, ease: "power2.out" },
           "-=0.5"
         )
-
-        /* 6. Copyright */
         .fromTo(copyrightRef.current,
           { opacity: 0 },
           { opacity: 1, duration: 0.6 },
           "-=0.3"
         )
-
-        /* 7. After entrance: start continuous drift of mega text */
         .call(() => {
           gsap.to(megaRef.current, {
             x: "-4%",
@@ -98,20 +82,19 @@ export default function Footer() {
   return (
     <footer
       ref={sectionRef}
-      className="relative bg-[#050505] overflow-hidden pt-28 pb-0 flex flex-col items-center text-white border-t border-white/[0.04]"
+      className="relative overflow-hidden bg-black text-white px-5 sm:px-8 lg:px-[133px] pt-14 pb-12"
     >
-
-      {/* ── LAYER 0: Red atmospheric glow (pulsing) ── */}
+      {/* Atmospheric glow */}
       <div
         ref={glowRef}
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[120%] h-[55%] pointer-events-none"
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-1/2 pointer-events-none"
         style={{
           background: "radial-gradient(ellipse 70% 60% at 50% 100%, rgba(226,6,19,0.12) 0%, transparent 70%)",
           animation: "glowPulse 4s ease-in-out infinite",
         }}
       />
 
-      {/* ── LAYER 1: Mega background text ── */}
+      {/* Mega background text */}
       <div
         ref={megaRef}
         className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden"
@@ -120,7 +103,7 @@ export default function Footer() {
       >
         <span
           style={{
-            fontSize: "clamp(90px, 17vw, 240px)",
+            fontSize: "clamp(60px, 12vw, 180px)",
             fontFamily: "'Georgia', serif",
             fontStyle: "italic",
             fontWeight: 900,
@@ -134,7 +117,7 @@ export default function Footer() {
         </span>
       </div>
 
-      {/* ── LAYER 2: Shimmer sweep (one-shot on enter) ── */}
+      {/* Shimmer sweep */}
       <div
         ref={shimmerRef}
         className="absolute inset-0 pointer-events-none"
@@ -145,15 +128,15 @@ export default function Footer() {
         aria-hidden="true"
       />
 
-      {/* ── CONTENT ── */}
-      <div className="relative z-10 flex flex-col items-center w-full px-6 pb-12">
+      {/* Content */}
+      <div className="relative z-10 flex flex-col items-center w-full">
 
         {/* Logo */}
         <img
           ref={logoRef}
           src="/rentahouse-maye-blanco.png"
           alt="Rent-A-House Mayerlin Rengifo"
-          className="h-[72px] w-auto mb-9"
+          className="h-16 w-auto mb-7"
           style={{ opacity: 0, filter: "brightness(0) invert(1)" }}
           draggable="false"
         />
@@ -161,7 +144,7 @@ export default function Footer() {
         {/* Red accent */}
         <div
           ref={accentRef}
-          className="w-24 h-px mb-9"
+          className="w-20 h-px mb-7"
           style={{
             background: "linear-gradient(90deg, transparent, #E20613, transparent)",
             transform: "scaleX(0)",
@@ -169,7 +152,7 @@ export default function Footer() {
         />
 
         {/* Nav */}
-        <nav ref={navRef} className="flex flex-wrap justify-center gap-8 mb-10">
+        <nav ref={navRef} className="flex flex-wrap justify-center gap-6 mb-8">
           {NAV.map(({ label, id }) => (
             <a
               key={id}
@@ -186,46 +169,34 @@ export default function Footer() {
           href="https://www.instagram.com/mayerlinrengifo.rah"
           target="_blank"
           rel="noopener noreferrer"
-          className="mb-9 text-white/50 hover:text-white transition-colors duration-300"
+          className="mb-7 text-white/50 hover:text-white transition-colors duration-300"
           aria-label="Instagram"
         >
-          <Instagram size={28} strokeWidth={1.4} />
+          <Instagram size={24} strokeWidth={1.4} />
         </a>
 
+        {/* Location */}
+        <div className="flex items-start gap-2 mb-7 text-white/40 max-w-xs text-center">
+          <MapPin size={13} strokeWidth={1.5} className="shrink-0 mt-0.5 text-[#E20613]" />
+          <p className="text-[10px] leading-relaxed font-light tracking-wide">
+            Caracas, Venezuela<br />
+            Calle El Recreo Torre Movilnet<br />
+            Piso 10 Ofic. 10-02
+          </p>
+        </div>
+
         {/* Thin separator */}
-        <div className="w-full max-w-xs h-px mb-9 bg-white/[0.04]" />
+        <div className="w-full max-w-xs h-px mb-7 bg-white/[0.04]" />
 
         {/* Copyright */}
         <p
           ref={copyrightRef}
-          className="text-[9px] uppercase tracking-[0.55em] font-light text-white/18 mb-16"
+          className="text-[9px] uppercase tracking-[0.55em] font-light text-white/30"
           style={{ opacity: 0 }}
         >
           © 2026 Rent-A-House · Mayerlin Rengifo
         </p>
-      </div>
 
-      {/* ── LAYER 3: Horizontal marquee — bottom edge ── */}
-      <div className="relative w-full overflow-hidden border-t border-white/[0.04] py-3.5 bg-[#040404]">
-        <div
-          className="flex whitespace-nowrap"
-          style={{
-            animation: "marquee 17s linear infinite",
-            width: "300%",
-          }}
-          aria-hidden="true"
-        >
-          {/* Repeated 3× for seamless loop */}
-          {[0, 1, 2].map((n) => (
-            <span
-              key={n}
-              className="text-[6px] font-black uppercase tracking-[0.35em] text-white/[0.09] pr-0"
-              style={{ flex: "0 0 33.333%" }}
-            >
-              {MARQUEE_TEXT.repeat(6)}
-            </span>
-          ))}
-        </div>
       </div>
     </footer>
   );

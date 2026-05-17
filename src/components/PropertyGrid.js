@@ -116,12 +116,13 @@ export default function PropertyGrid() {
     <section
       id="propiedades"
       ref={sectionRef}
-      style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0) 0px, rgba(255,255,255,0.60) 80px, #ffffff 200px)", paddingBottom: "80px", marginTop: "-240px", position: "relative", zIndex: 2 }}
+      className="mt-[-30px] md:mt-[-240px]"
+      style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0) 0px, rgba(255,255,255,0.60) 80px, #ffffff 200px)", paddingBottom: "80px", position: "relative", zIndex: 2 }}
     >
       {/* Header */}
       <div
         ref={headerRef}
-        className="flex flex-wrap items-end justify-between gap-3 px-5 sm:px-10 lg:px-[133px] pt-10 pb-7"
+        className="flex flex-wrap items-end justify-between gap-3 px-5 sm:px-10 lg:px-[133px] pt-6 pb-3 md:pt-10 md:pb-7"
         style={{ opacity: 0 }}
       >
         <div>

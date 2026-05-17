@@ -10,7 +10,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="es">
-      <body className="antialiased bg-black">
+      <body className="antialiased bg-white">
         <div className="grain-overlay" aria-hidden="true" />
         <Navbar />
         {children}

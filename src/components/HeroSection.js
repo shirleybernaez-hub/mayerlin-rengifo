@@ -92,7 +92,7 @@ function SearchField({ label, value, prefixIcon, options, fieldKey, openField, s
     <div style={{ position: "relative", gridColumn: colSpan ? `span ${colSpan}` : undefined, height: "100%" }}>
       <button
         type="button"
-        onClick={e => { e.stopPropagation(); setOpenField(isOpen ? null : fieldKey); }}
+        onClick={e => { e.stopPropagation(); e.nativeEvent.stopImmediatePropagation(); setOpenField(isOpen ? null : fieldKey); }}
         style={{
           display: "flex", flexDirection: "column", justifyContent: "center",
           padding: "12px 16px", height: "100%", width: "100%",
@@ -122,7 +122,7 @@ function SearchField({ label, value, prefixIcon, options, fieldKey, openField, s
       {/* Dropdown */}
       {isOpen && options && (
         <div
-          onClick={e => e.stopPropagation()}
+          onClick={e => { e.stopPropagation(); e.nativeEvent.stopImmediatePropagation(); }}
           style={{
             position: "absolute", top: "calc(100% + 6px)", left: 0, zIndex: 50,
             minWidth: "100%", background: "white",
@@ -207,7 +207,7 @@ export default function HeroSection() {
       style={{
         position: "relative",
         width: "100%",
-        overflow: "hidden",
+        overflow: "visible",
         backgroundColor: "#0a0c12",
       }}
     >
@@ -258,7 +258,7 @@ export default function HeroSection() {
         <h1
           style={{
             fontFamily: SERIF,
-            fontSize: "clamp(42px,5vw,66px)",
+            fontSize: "clamp(56px,7vw,96px)",
             lineHeight: 0.96,
             letterSpacing: "-0.025em",
             color: "white",
@@ -274,19 +274,6 @@ export default function HeroSection() {
           <br />
           metro cuadrado.
         </h1>
-        <p
-          style={{
-            fontFamily: SANS,
-            fontWeight: 600,
-            fontSize: "clamp(15px, 4vw, 22px)",
-            lineHeight: 1.4,
-            color: "rgba(255,255,255,0.95)",
-            marginTop: "14px",
-            margin: "14px 0 0",
-          }}
-        >
-          De la primera visita a las llaves en mano.
-        </p>
       </div>
 
       {/* ── Zone 2: Search bar ── */}
@@ -295,10 +282,10 @@ export default function HeroSection() {
         className="hidden md:block"
         style={{
           position: "absolute",
-          bottom: "200px",
+          bottom: "225px",
           left: "clamp(20px, 8vw, 133px)",
           right: "clamp(20px, 8vw, 133px)",
-          zIndex: 3,
+          zIndex: 20,
           opacity: 0,
         }}
       >
@@ -483,7 +470,7 @@ export default function HeroSection() {
         style={{ position: "absolute", bottom: "28px", left: "16px", right: "16px", zIndex: 3 }}
       >
         {/* Tabs */}
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: "10px" }}>
+        <div style={{ display: "flex", justifyContent: "flex-start", marginBottom: "10px" }}>
           <div style={{ display: "inline-flex", background: "rgba(255,255,255,0.12)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)", border: "1px solid rgba(255,255,255,0.22)", borderRadius: "999px", padding: "4px" }}>
             {TABS.map(tab => {
               const isActive = tab === activeTab;
