@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
 const NAV_LINKS = [
@@ -10,161 +10,153 @@ const NAV_LINKS = [
 ];
 
 export default function Navbar() {
-  const overlayRef   = useRef(null);
-  const introLogoRef = useRef(null);
-  const glowRef      = useRef(null);
-  const navRef       = useRef(null);
-  const [scrolled, setScrolled] = useState(false);
+  const headerRef          = useRef(null);
+  const floatingLogoRef    = useRef(null);
+  const navPillRef         = useRef(null);
+  const navLogoWrapperRef  = useRef(null);
+  const separatorRef       = useRef(null);
 
-  /* Scroll detection — cambia a blanco fuera del hero */
   useEffect(() => {
+    /* ── Entrada inicial del header ── */
+    gsap.fromTo(headerRef.current,
+      { opacity: 0, y: -20 },
+      { opacity: 1, y: 0, duration: 1.0, ease: "expo.out", delay: 0.4 }
+    );
+
+    /* ── Animación en scroll ── */
     const onScroll = () => {
-      setScrolled(window.scrollY > window.innerHeight * 0.75);
+      const p = Math.min(window.scrollY / 280, 1); // 0 → 1 en los primeros 280px
+
+      /* Logo flotante: desaparece y sube */
+      gsap.set(floatingLogoRef.current, {
+        opacity:  Math.max(0, 1 - p * 2.2),
+        scale:    1 - p * 0.12,
+        y:        -p * 16,
+      });
+
+      /* Logo dentro del navbar: aparece con slide desde la izquierda */
+      const logoProgress = Math.max(0, Math.min(1, (p - 0.35) * 3));
+      gsap.set(navLogoWrapperRef.current, {
+        maxWidth: `${logoProgress * 130}px`,
+        opacity:   logoProgress,
+      });
+
+      /* Separador junto al logo interno */
+      gsap.set(separatorRef.current, {
+        opacity: logoProgress,
+        maxWidth: `${logoProgress * 20}px`,
+      });
+
+      /* Navbar: glass → blanco sólido */
+      if (p < 0.65) {
+        navPillRef.current.style.background =
+          `linear-gradient(135deg, rgba(255,255,255,${0.11 + p * 0.1}) 0%, rgba(255,255,255,${0.05 + p * 0.08}) 100%)`;
+        navPillRef.current.style.backdropFilter  = `blur(${28 + p * 10}px)`;
+        navPillRef.current.style.WebkitBackdropFilter = `blur(${28 + p * 10}px)`;
+        navPillRef.current.style.border = "1px solid rgba(255,255,255,0.18)";
+        navPillRef.current.style.boxShadow =
+          `0 ${8 + p * 8}px ${40 + p * 20}px rgba(0,0,0,${0.28 + p * 0.12})`;
+      } else {
+        navPillRef.current.style.background    = "rgba(255,255,255,0.97)";
+        navPillRef.current.style.backdropFilter = "blur(40px)";
+        navPillRef.current.style.WebkitBackdropFilter = "blur(40px)";
+        navPillRef.current.style.border        = "1px solid rgba(0,0,0,0.07)";
+        navPillRef.current.style.boxShadow     = "0 4px 32px rgba(0,0,0,0.12)";
+      }
     };
+
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* Intro animation */
-  useEffect(() => {
-    const tl = gsap.timeline({
-      onComplete: () => {
-        if (overlayRef.current) {
-          overlayRef.current.style.pointerEvents = "none";
-          overlayRef.current.style.display = "none";
-        }
-      },
-    });
-
-    tl
-      .fromTo(introLogoRef.current,
-        { opacity: 0, scale: 0.72, y: 28 },
-        { opacity: 1, scale: 1,    y: 0,  duration: 1.5, ease: "expo.out" }
-      )
-      .fromTo(glowRef.current,
-        { opacity: 0, scale: 0.8 },
-        { opacity: 1, scale: 1,   duration: 1.0, ease: "power2.out" },
-        "<+0.2"
-      )
-      .to(introLogoRef.current,
-        { y: -12, duration: 1.1, ease: "sine.inOut", yoyo: true, repeat: 1 },
-        "+=0.7"
-      )
-      .to(introLogoRef.current,
-        { opacity: 0, scale: 0.55, y: -90, duration: 1.0, ease: "power3.in" },
-        "+=0.2"
-      )
-      .to(overlayRef.current,
-        { opacity: 0, duration: 0.85, ease: "power2.inOut" },
-        "<+0.1"
-      )
-      .fromTo(navRef.current,
-        { opacity: 0, y: -24, scale: 0.96 },
-        { opacity: 1, y: 0,   scale: 1,    duration: 1.0, ease: "expo.out" },
-        "<+0.25"
-      );
-  }, []);
-
-  const isGlass = !scrolled;
-
   return (
-    <>
-      {/* ── Overlay intro ── */}
-      <div
-        ref={overlayRef}
-        className="fixed inset-0 z-[200] flex items-center justify-center"
-        style={{ background: "rgba(3,3,7,0.97)" }}
-      >
-        <div ref={glowRef} className="absolute pointer-events-none"
-          style={{
-            width: 400, height: 400, borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(226,6,19,0.13) 0%, transparent 70%)",
-            filter: "blur(55px)", opacity: 0,
-          }}
+    <header
+      ref={headerRef}
+      className="fixed top-0 inset-x-0 z-[100] flex flex-col items-center pt-5 gap-2"
+      style={{ opacity: 0 }}
+    >
+      {/* ── Logo flotante — protagonista ── */}
+      <div ref={floatingLogoRef}>
+        <img
+          src="/rentahouse-maye.svg"
+          alt="Rent-A-House"
+          className="h-16 md:h-20 w-auto"
+          style={{ filter: "drop-shadow(0 4px 24px rgba(0,0,0,0.45))" }}
+          draggable="false"
         />
-        <div ref={introLogoRef} className="relative" style={{ opacity: 0 }}>
-          <div className="px-16 py-12 rounded-[2rem]"
-            style={{
-              background: "linear-gradient(135deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.03) 100%)",
-              border: "1px solid rgba(255,255,255,0.14)",
-              boxShadow: [
-                "0 40px 100px rgba(0,0,0,0.55)",
-                "inset 0 1px 0 rgba(255,255,255,0.18)",
-                "inset 0 -1px 0 rgba(0,0,0,0.12)",
-                "0 0 80px rgba(226,6,19,0.07)",
-              ].join(", "),
-              backdropFilter: "blur(28px)",
-              WebkitBackdropFilter: "blur(28px)",
-            }}
-          >
-            <img src="/rentahouse-maye.svg" alt="Rent-A-House"
-              className="h-28 md:h-36 w-auto" draggable="false" />
-          </div>
-        </div>
       </div>
 
-      {/* ── Navbar ── */}
-      <header
-        ref={navRef}
-        className="fixed top-5 inset-x-0 z-[100] flex justify-center px-4 transition-all duration-500"
-        style={{ opacity: 0 }}
+      {/* ── Navbar pill — soporte visual ── */}
+      <div
+        ref={navPillRef}
+        className="flex items-center gap-5 px-5 py-2.5 rounded-2xl transition-[box-shadow] duration-500"
+        style={{
+          background: "linear-gradient(135deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.05) 100%)",
+          border: "1px solid rgba(255,255,255,0.18)",
+          boxShadow: "0 8px 40px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.22)",
+          backdropFilter: "blur(28px)",
+          WebkitBackdropFilter: "blur(28px)",
+        }}
       >
+        {/* Logo interno — entra en scroll */}
         <div
-          className="flex items-center gap-6 px-6 py-3 rounded-2xl transition-all duration-500"
-          style={isGlass ? {
-            background: "linear-gradient(135deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.05) 100%)",
-            border: "1px solid rgba(255,255,255,0.18)",
-            boxShadow: "0 8px 40px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.22)",
-            backdropFilter: "blur(28px)",
-            WebkitBackdropFilter: "blur(28px)",
-          } : {
-            background: "rgba(255,255,255,0.96)",
-            border: "1px solid rgba(0,0,0,0.07)",
-            boxShadow: "0 4px 24px rgba(0,0,0,0.10)",
-            backdropFilter: "blur(20px)",
-            WebkitBackdropFilter: "blur(20px)",
-          }}
+          ref={navLogoWrapperRef}
+          className="overflow-hidden shrink-0"
+          style={{ maxWidth: 0, opacity: 0 }}
         >
-          {/* Logo */}
-          <a href="#inicio" className="shrink-0">
-            <img src="/rentahouse-maye.svg" alt="Rent-A-House" className="h-9 w-auto" draggable="false" />
-          </a>
-
-          <div className="h-5 w-px shrink-0"
-            style={{ background: isGlass ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.10)" }} />
-
-          {/* Links */}
-          <nav className="hidden md:flex items-center gap-7">
-            {NAV_LINKS.map(({ label, href }) => (
-              <a key={label} href={href}
-                className="relative text-[9px] font-black uppercase tracking-[0.35em] transition-colors duration-300 group"
-                style={{ color: isGlass ? "rgba(255,255,255,0.70)" : "rgba(30,30,30,0.75)" }}
-              >
-                {label}
-                <span className="absolute -bottom-0.5 left-0 w-0 h-px rounded-full group-hover:w-full transition-all duration-300"
-                  style={{ background: isGlass ? "rgba(255,255,255,0.8)" : "#E20613" }} />
-              </a>
-            ))}
-          </nav>
-
-          <div className="h-5 w-px shrink-0"
-            style={{ background: isGlass ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.10)" }} />
-
-          {/* CTA */}
-          <a
-            href="https://wa.me/584141210496"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="shrink-0 text-[9px] font-black uppercase tracking-[0.3em] px-6 py-2.5 rounded-xl text-white whitespace-nowrap transition-all duration-300 hover:brightness-110 active:scale-95"
-            style={{
-              background: "linear-gradient(135deg, #E20613 0%, #b00410 100%)",
-              boxShadow: "0 0 20px rgba(226,6,19,0.38)",
-            }}
-          >
-            Contactar
-          </a>
+          <img
+            src="/rentahouse-maye.svg"
+            alt="Rent-A-House"
+            className="h-8 w-auto pr-1"
+            draggable="false"
+          />
         </div>
-      </header>
-    </>
+
+        {/* Separador logo interno / links */}
+        <div
+          ref={separatorRef}
+          className="h-5 w-px shrink-0 overflow-hidden"
+          style={{ maxWidth: 0, opacity: 0, background: "rgba(0,0,0,0.10)" }}
+        />
+
+        {/* Links */}
+        <nav className="hidden md:flex items-center gap-6">
+          {NAV_LINKS.map(({ label, href }) => (
+            <a
+              key={label}
+              href={href}
+              className="relative text-[9px] font-black uppercase tracking-[0.35em] transition-colors duration-300 group nav-link"
+              style={{ color: "rgba(255,255,255,0.72)" }}
+              onMouseEnter={e => { e.currentTarget.style.color = "white"; }}
+              onMouseLeave={e => {
+                const p = Math.min(window.scrollY / 280, 1);
+                e.currentTarget.style.color = p > 0.65 ? "rgba(30,30,30,0.78)" : "rgba(255,255,255,0.72)";
+              }}
+            >
+              {label}
+              <span className="absolute -bottom-0.5 left-0 w-0 h-px rounded-full bg-current group-hover:w-full transition-all duration-300" />
+            </a>
+          ))}
+        </nav>
+
+        <div className="h-5 w-px shrink-0" style={{ background: "rgba(255,255,255,0.15)" }} />
+
+        {/* CTA — oscuro, discreto */}
+        <a
+          href="https://wa.me/584141210496"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="shrink-0 text-[8.5px] font-black uppercase tracking-[0.3em] px-5 py-2 rounded-xl text-white whitespace-nowrap transition-all duration-300 active:scale-95"
+          style={{
+            background: "linear-gradient(135deg, #7C1D1D 0%, #6B1A1A 100%)",
+            boxShadow: "0 0 10px rgba(100,20,20,0.25)",
+          }}
+          onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 0 18px rgba(100,20,20,0.45)"; }}
+          onMouseLeave={e => { e.currentTarget.style.boxShadow = "0 0 10px rgba(100,20,20,0.25)"; }}
+        >
+          Contactar
+        </a>
+      </div>
+    </header>
   );
 }

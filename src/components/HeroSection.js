@@ -76,8 +76,7 @@ export default function HeroSection() {
 
     const ctx = gsap.context(() => {
 
-      /* delay sincronizado con el fin del overlay del navbar (~4.7s) */
-      const tl = gsap.timeline({ defaults: { ease: "expo.out" }, delay: 4.5 });
+      const tl = gsap.timeline({ defaults: { ease: "expo.out" }, delay: 0.8 });
 
       tl
         .fromTo(skyRef.current,
@@ -107,7 +106,7 @@ export default function HeroSection() {
 
       gsap.to(arrowRef.current, {
         y: 7, repeat: -1, yoyo: true,
-        duration: 0.9, ease: "power1.inOut", delay: 7.0,
+        duration: 0.9, ease: "power1.inOut", delay: 3.5,
       });
 
       ScrollTrigger.create({
