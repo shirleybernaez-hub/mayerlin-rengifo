@@ -291,11 +291,12 @@ export default function HeroSection() {
       {/* ── Zone 2: Search bar ── */}
       <div
         ref={searchRef}
+        className="hidden md:block"
         style={{
           position: "absolute",
-          bottom: "230px",
-          left: "133px",
-          right: "133px",
+          bottom: "200px",
+          left: "clamp(20px, 8vw, 133px)",
+          right: "clamp(20px, 8vw, 133px)",
           zIndex: 3,
           opacity: 0,
         }}

@@ -154,8 +154,14 @@ export default function Navbar() {
                 transition:     "background 0.2s, color 0.2s",
                 whiteSpace:     "nowrap",
               }}
-              onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.14)"; e.currentTarget.style.color = "white"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "rgba(255,255,255,0.85)"; }}
+              onMouseEnter={e => {
+                e.currentTarget.style.background = isSticky ? "rgba(26,29,36,0.07)" : "rgba(255,255,255,0.14)";
+                e.currentTarget.style.color      = isSticky ? "#1A1D24"              : "white";
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.background = "transparent";
+                e.currentTarget.style.color      = isSticky ? "rgba(26,29,36,0.70)" : "rgba(255,255,255,0.85)";
+              }}
             >
               {label}
             </a>

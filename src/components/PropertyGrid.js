@@ -116,18 +116,13 @@ export default function PropertyGrid() {
     <section
       id="propiedades"
       ref={sectionRef}
-      style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0) 0px, rgba(255,255,255,0.60) 80px, #ffffff 200px)", paddingTop: "40px", paddingBottom: "80px", marginTop: "-240px", position: "relative", zIndex: 2 }}
+      style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0) 0px, rgba(255,255,255,0.60) 80px, #ffffff 200px)", paddingBottom: "80px", marginTop: "-240px", position: "relative", zIndex: 2 }}
     >
       {/* Header */}
       <div
         ref={headerRef}
-        style={{
-          padding: "40px 133px 28px",
-          opacity: 0,
-          display: "flex",
-          alignItems: "flex-end",
-          justifyContent: "space-between",
-        }}
+        className="flex flex-wrap items-end justify-between gap-3 px-5 sm:px-10 lg:px-[133px] pt-10 pb-7"
+        style={{ opacity: 0 }}
       >
         <div>
           <p style={{
@@ -160,14 +155,7 @@ export default function PropertyGrid() {
       </div>
 
       {/* 6-card grid */}
-      <div
-        style={{
-          padding: "0 133px",
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gap: "20px",
-        }}
-      >
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 px-5 sm:px-10 lg:px-[133px]">
         {PROPERTIES.map((prop, i) => (
           <div
             key={prop.id}
@@ -256,7 +244,7 @@ export default function PropertyGrid() {
       </div>
 
       {/* CTA */}
-      <div style={{ display: "flex", justifyContent: "center", marginTop: "48px" }}>
+      <div className="flex justify-center mt-10 px-5">
         <button style={{
           fontFamily: SANS, fontSize: "10px", fontWeight: 800,
           textTransform: "uppercase", letterSpacing: "0.30em",
