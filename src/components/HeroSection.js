@@ -203,10 +203,10 @@ export default function HeroSection() {
     `}</style>
     <section
       id="inicio"
+      className="h-[720px] md:h-[960px]"
       style={{
         position: "relative",
         width: "100%",
-        height: "960px",
         overflow: "hidden",
         backgroundColor: "#0a0c12",
       }}
@@ -247,7 +247,8 @@ export default function HeroSection() {
         style={{
           position: "absolute",
           top: "16%",
-          left: "133px",
+          left: "clamp(20px, 8vw, 133px)",
+          right: "clamp(20px, 8vw, 133px)",
           maxWidth: "640px",
           zIndex: 2,
           opacity: 0,
@@ -277,7 +278,7 @@ export default function HeroSection() {
           style={{
             fontFamily: SANS,
             fontWeight: 600,
-            fontSize: "22px",
+            fontSize: "clamp(15px, 4vw, 22px)",
             lineHeight: 1.4,
             color: "rgba(255,255,255,0.95)",
             marginTop: "14px",
@@ -476,40 +477,82 @@ export default function HeroSection() {
       </div>
 
 
-      {/* ── Mobile search fallback (hidden on desktop) ── */}
+      {/* ── Mobile filter (hidden on md+) ── */}
       <div
         className="md:hidden"
-        style={{
-          position: "absolute",
-          bottom: "60px",
-          left: "16px",
-          right: "16px",
-          zIndex: 3,
-        }}
+        style={{ position: "absolute", bottom: "28px", left: "16px", right: "16px", zIndex: 3 }}
       >
-        <div style={{
-          background: "rgba(255,255,255,0.95)",
-          borderRadius: "14px",
-          padding: "12px 16px",
-          display: "flex",
-          alignItems: "center",
-          gap: "10px",
-          boxShadow: "0 20px 50px -20px rgba(0,0,0,0.55)",
-        }}>
-          <SearchIcon />
-          <input
-            type="text"
-            placeholder="Buscar propiedad, zona, código..."
-            style={{
-              flex: 1,
-              border: "none",
-              background: "transparent",
-              fontFamily: SANS,
-              fontSize: "15px",
-              color: INK,
-              outline: "none",
-            }}
-          />
+        {/* Tabs */}
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: "10px" }}>
+          <div style={{ display: "inline-flex", background: "rgba(255,255,255,0.12)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)", border: "1px solid rgba(255,255,255,0.22)", borderRadius: "999px", padding: "4px" }}>
+            {TABS.map(tab => {
+              const isActive = tab === activeTab;
+              return (
+                <button key={tab} type="button" onClick={() => setActiveTab(tab)}
+                  style={{ padding: "7px 16px", borderRadius: "999px", fontSize: "11px", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", fontFamily: SANS, background: isActive ? "white" : "transparent", color: isActive ? INK : "rgba(255,255,255,0.80)", border: "none", cursor: "pointer", transition: "background 0.2s, color 0.2s" }}>
+                  {tab}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Bar */}
+        <div style={{ background: "rgba(255,255,255,0.96)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderRadius: "16px", padding: "6px", boxShadow: "0 8px 32px rgba(0,0,0,0.18)" }}>
+          {/* Fila 1: Tipo + Ciudad */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "stretch" }}>
+            <SearchField label="Tipo" value={filters.tipo} fieldKey="tipo" options={FIELD_OPTIONS.tipo} openField={openField} setOpenField={setOpenField} onSelect={handleSelect} />
+            <SearchField label="Ciudad" value={filters.ciudad} fieldKey="ciudad" options={FIELD_OPTIONS.ciudad} openField={openField} setOpenField={setOpenField} onSelect={handleSelect} prefixIcon={<PinIcon />} noBorder />
+          </div>
+
+          <div style={{ borderTop: "1px solid rgba(26,29,36,0.09)", margin: "0 6px" }} />
+
+          {/* Fila 2: Urbanización + Dormitorios */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "stretch" }}>
+            <SearchField label="Urbanización" value={filters.urb} fieldKey="urb" options={FIELD_OPTIONS.urb} openField={openField} setOpenField={setOpenField} onSelect={handleSelect} />
+            <SearchField label="Dormitorios" value={filters.dorms} fieldKey="dorms" options={FIELD_OPTIONS.dorms} openField={openField} setOpenField={setOpenField} onSelect={handleSelect} noBorder />
+          </div>
+
+          <div style={{ borderTop: "1px solid rgba(26,29,36,0.09)", margin: "0 6px" }} />
+
+          {/* Precio mín + máx */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "stretch" }}>
+            <div style={{ borderRight: "1px solid rgba(26,29,36,0.10)" }}>
+              <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", padding: "10px 14px", gap: "3px" }}>
+                <span style={{ fontFamily: SANS, fontSize: "9px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.18em", color: MUTED }}>Precio mín.</span>
+                <span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                  <DollarIcon />
+                  <input type="text" placeholder="0" value={filters.precioMin} onChange={e => setFilters(f => ({ ...f, precioMin: e.target.value }))} className="hero-input" style={{ fontFamily: SANS, fontSize: "13px", fontWeight: 500, color: INK, background: "transparent", border: "none", outline: "none", width: "100%" }} />
+                </span>
+              </div>
+            </div>
+            <div>
+              <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", padding: "10px 14px", gap: "3px" }}>
+                <span style={{ fontFamily: SANS, fontSize: "9px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.18em", color: MUTED }}>Precio máx.</span>
+                <span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                  <DollarIcon />
+                  <input type="text" placeholder="0" value={filters.precioMax} onChange={e => setFilters(f => ({ ...f, precioMax: e.target.value }))} className="hero-input" style={{ fontFamily: SANS, fontSize: "13px", fontWeight: 500, color: INK, background: "transparent", border: "none", outline: "none", width: "100%" }} />
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div style={{ borderTop: "1px solid rgba(26,29,36,0.09)", margin: "0 6px" }} />
+
+          {/* Botón buscar */}
+          <div style={{ padding: "6px" }}>
+            <button type="button" style={{ width: "100%", height: "46px", background: BRAND_RED, color: "white", fontFamily: SANS, fontWeight: 700, fontSize: "12px", letterSpacing: "0.06em", border: "none", borderRadius: "999px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "7px" }}>
+              <SearchIcon />
+              Buscar propiedades
+            </button>
+          </div>
+        </div>
+
+        {/* Limpiar filtros */}
+        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "8px" }}>
+          <button type="button" onClick={resetFilters} style={{ fontFamily: SANS, fontSize: "11px", fontWeight: 500, color: "rgba(255,255,255,0.70)", background: "transparent", border: "none", cursor: "pointer" }}>
+            ← Limpiar filtros
+          </button>
         </div>
       </div>
     </section>
