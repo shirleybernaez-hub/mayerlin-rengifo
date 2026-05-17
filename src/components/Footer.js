@@ -177,7 +177,7 @@ export default function Footer() {
 
         {/* Location */}
         <div className="flex items-start gap-2 mb-7 text-white/40 max-w-xs text-center">
-          <MapPin size={13} strokeWidth={1.5} className="shrink-0 mt-0.5 text-[#E20613]" />
+          <MapPin size={16} strokeWidth={1.4} className="shrink-0 mt-0.5 text-white/50" />
           <p className="text-[10px] leading-relaxed font-light tracking-wide">
             Caracas, Venezuela<br />
             Calle El Recreo Torre Movilnet<br />

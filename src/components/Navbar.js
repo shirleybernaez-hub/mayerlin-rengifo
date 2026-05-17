@@ -94,7 +94,14 @@ export default function Navbar() {
     };
 
     const onScroll = () => {
-      const past = window.scrollY > window.innerHeight * 0.80;
+      const hero = document.getElementById("inicio");
+      let threshold = window.innerHeight * 0.75;
+      if (hero) {
+        const isMd = window.innerWidth >= 768;
+        const filterBottom = isMd ? 225 : 28;
+        threshold = hero.offsetHeight - filterBottom - 70;
+      }
+      const past = window.scrollY > threshold;
       if (past && !stickyRef.current)  { stickyRef.current = true;  setIsSticky(true);  applySticky(); }
       if (!past && stickyRef.current)  { stickyRef.current = false; setIsSticky(false); applyHero();   }
     };
