@@ -157,7 +157,7 @@ export default function ContactSection() {
             {/* Label */}
             <div ref={labelRef} className="opacity-0 flex items-center gap-3 mb-7">
               <div className="h-px w-12 bg-gradient-to-r from-[#E20613] to-transparent" />
-              <span className="text-[9px] font-black uppercase tracking-[0.55em] text-[#E20613]">
+              <span className="text-[9px] font-black uppercase tracking-[0.55em] text-[#E20613]/60">
                 Contacto Directo
               </span>
             </div>
@@ -200,8 +200,7 @@ export default function ContactSection() {
           {/* ── RIGHT COLUMN: FORM ── */}
           <div
             ref={formRef}
-            className="opacity-0 relative bg-white/[0.04] border border-white/[0.08] rounded-2xl p-7 md:p-9 shadow-[0_40px_100px_rgba(0,0,0,0.5)]"
-            style={{ backdropFilter: "blur(16px)" }}
+            className="opacity-0 relative bg-white border border-neutral-200/80 rounded-2xl p-7 md:p-9 shadow-[0_20px_60px_rgba(0,0,0,0.18)]"
           >
             {/* Subtle top accent */}
             <div
@@ -209,7 +208,7 @@ export default function ContactSection() {
               style={{ background: "linear-gradient(90deg, transparent, rgba(226,6,19,0.6), transparent)" }}
             />
 
-            <p className="text-[9px] font-black uppercase tracking-[0.45em] text-white/30 mb-6">
+            <p className="text-[9px] font-black uppercase tracking-[0.45em] text-neutral-400 mb-6">
               Formulario de solicitud
             </p>
 
@@ -229,7 +228,7 @@ export default function ContactSection() {
 
               {/* Tipo de solicitud */}
               <div>
-                <label className="block text-[9px] font-black uppercase tracking-[0.35em] text-white/30 mb-3">
+                <label className="block text-[9px] font-black uppercase tracking-[0.35em] text-neutral-400 mb-3">
                   Tipo de solicitud
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -240,19 +239,19 @@ export default function ContactSection() {
                       onClick={() => setSelectedType(id)}
                       className={`relative flex flex-col items-center gap-2 py-4 px-2 rounded-xl border transition-all duration-300 group ${
                         selectedType === id
-                          ? "border-[#E20613] bg-[#E20613]/10 shadow-[0_0_20px_rgba(226,6,19,0.18)]"
-                          : "border-white/[0.06] bg-white/[0.02] hover:border-[#E20613]/50 hover:bg-white/[0.06]"
+                          ? "border-[#E20613] bg-[#E20613]/8 shadow-[0_0_16px_rgba(226,6,19,0.12)]"
+                          : "border-neutral-200 bg-neutral-50 hover:border-[#E20613]/40 hover:bg-neutral-100"
                       }`}
                     >
                       <Icon
                         size={17}
                         className={`transition-colors duration-300 ${
-                          selectedType === id ? "text-[#E20613]" : "text-white/22"
+                          selectedType === id ? "text-[#E20613]" : "text-neutral-400"
                         }`}
                       />
                       <span
                         className={`text-[8px] font-black uppercase tracking-[0.18em] transition-colors duration-300 ${
-                          selectedType === id ? "text-[#E20613]" : "text-white/25"
+                          selectedType === id ? "text-[#E20613]" : "text-neutral-400"
                         }`}
                       >
                         {label}
@@ -271,15 +270,15 @@ export default function ContactSection() {
 
               {/* Mensaje */}
               <div className="flex flex-col gap-2">
-                <label className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">
+                <label className="text-[9px] font-black uppercase tracking-[0.35em] text-neutral-400">
                   Mensaje
                 </label>
                 <div className="relative">
-                  <MessageSquare size={13} className="absolute top-4 left-4 text-white/18 pointer-events-none" />
+                  <MessageSquare size={13} className="absolute top-4 left-4 text-neutral-400 pointer-events-none" />
                   <textarea
                     placeholder="Cuéntanos qué estás buscando..."
                     rows={4}
-                    className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl pl-10 pr-4 pt-3.5 pb-3.5 text-white/75 text-[13px] placeholder-white/18 outline-none resize-none focus:border-[#E20613]/50 focus:bg-white/[0.06] transition-all duration-300 leading-relaxed"
+                    className="w-full bg-neutral-50 border border-neutral-200 rounded-xl pl-10 pr-4 pt-3.5 pb-3.5 text-neutral-700 text-[13px] placeholder-neutral-400 outline-none resize-none focus:border-[#E20613]/50 focus:bg-white transition-all duration-300 leading-relaxed"
                   />
                 </div>
               </div>
@@ -306,7 +305,7 @@ export default function ContactSection() {
               </button>
 
               {/* Disclaimer */}
-              <p className="text-center text-[9px] text-white font-medium leading-relaxed">
+              <p className="text-center text-[9px] text-neutral-400 font-medium leading-relaxed">
                 Al enviar, aceptas que Mayerlin Rengifo te contacte para brindarte asesoría inmobiliaria.
                 <br />Tu información es completamente confidencial.
               </p>
@@ -436,26 +435,26 @@ function FormInput({ Icon, label, placeholder, type = "text" }) {
 
   return (
     <div className="flex flex-col gap-2">
-      <label className="text-[9px] font-black uppercase tracking-[0.35em] text-white/35">
+      <label className="text-[9px] font-black uppercase tracking-[0.35em] text-neutral-400">
         {label}
       </label>
       <div
         className={`relative rounded-xl border transition-all duration-300 hover:border-[#E20613]/40 ${
           focused
-            ? "border-[#E20613]/60 bg-white/[0.07] shadow-[0_0_0_3px_rgba(226,6,19,0.08)]"
-            : "border-white/[0.07] bg-white/[0.04]"
+            ? "border-[#E20613]/60 bg-white shadow-[0_0_0_3px_rgba(226,6,19,0.08)]"
+            : "border-neutral-200 bg-neutral-50"
         }`}
       >
         <Icon
           size={13}
-          className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-white/20"
+          className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-400"
         />
         <input
           type={type}
           placeholder={placeholder}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          className="w-full bg-transparent text-white/80 text-[13px] h-11 pl-10 pr-4 rounded-xl placeholder-white/20 outline-none"
+          className="w-full bg-transparent text-neutral-800 text-[13px] h-11 pl-10 pr-4 rounded-xl placeholder-neutral-400 outline-none"
         />
       </div>
     </div>
