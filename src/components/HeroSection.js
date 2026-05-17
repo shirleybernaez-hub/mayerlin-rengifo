@@ -5,7 +5,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const FieldBox = ({ children }) => (
   <div
-    className="flex items-center rounded-xl px-3 py-3.5 min-w-0"
+    className="flex items-center rounded-xl px-3 min-w-0"
+    style={{ minHeight: "54px" }}
     style={{
       background: "rgba(255,255,255,0.08)",
       border: "1px solid rgba(255,255,255,0.22)",
