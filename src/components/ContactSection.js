@@ -159,6 +159,12 @@ export default function ContactSection() {
           style={{ zIndex: 0, top: "-12%", height: "124%", willChange: "transform" }}
         />
 
+        {/* Overlay */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ zIndex: 1, background: "rgba(7,8,13,0.58)" }}
+        />
+
         <div className="relative max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-20 items-start" style={{ zIndex: 2 }}>
 
           {/* ── LEFT COLUMN ── */}
