@@ -116,7 +116,7 @@ export default function PropertyGrid() {
     <section
       id="propiedades"
       ref={sectionRef}
-      className="mt-[-30px] md:mt-[-240px]"
+      className="mt-[-30px] md:mt-[-210px]"
       style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0) 0px, rgba(255,255,255,0.60) 80px, #ffffff 200px)", paddingBottom: "80px", position: "relative", zIndex: 2 }}
     >
       {/* Header */}

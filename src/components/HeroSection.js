@@ -246,7 +246,7 @@ export default function HeroSection() {
         ref={headlineRef}
         style={{
           position: "absolute",
-          top: "16%",
+          top: "calc(16% + 30px)",
           left: "clamp(20px, 8vw, 133px)",
           right: "clamp(20px, 8vw, 133px)",
           maxWidth: "640px",
@@ -282,7 +282,7 @@ export default function HeroSection() {
         className="hidden md:block"
         style={{
           position: "absolute",
-          bottom: "225px",
+          bottom: "195px",
           left: "clamp(20px, 8vw, 133px)",
           right: "clamp(20px, 8vw, 133px)",
           zIndex: 20,
