@@ -164,21 +164,10 @@ export default function Footer() {
           ))}
         </nav>
 
-        {/* Instagram */}
-        <a
-          href="https://www.instagram.com/mayerlinrengifo.rah"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mb-7 text-white/50 hover:text-white transition-colors duration-300"
-          aria-label="Instagram"
-        >
-          <Instagram size={24} strokeWidth={1.4} />
-        </a>
-
-        {/* Location */}
-        <div className="flex items-start gap-2 mb-7 text-white/40 max-w-xs text-center">
-          <MapPin size={16} strokeWidth={1.4} className="shrink-0 mt-0.5 text-white/50" />
-          <p className="text-[10px] leading-relaxed font-light tracking-wide">
+        {/* Location — pin centrado encima de la dirección */}
+        <div className="flex flex-col items-center gap-2 mb-7 text-white/40">
+          <MapPin size={16} strokeWidth={1.4} className="text-white/50" />
+          <p className="text-[10px] leading-relaxed font-light tracking-wide text-center">
             Caracas, Venezuela<br />
             Calle El Recreo Torre Movilnet<br />
             Piso 10 Ofic. 10-02
@@ -188,14 +177,25 @@ export default function Footer() {
         {/* Thin separator */}
         <div className="w-full max-w-xs h-px mb-7 bg-white/[0.04]" />
 
-        {/* Copyright */}
-        <p
-          ref={copyrightRef}
-          className="text-[9px] uppercase tracking-[0.55em] font-light text-white/30"
-          style={{ opacity: 0 }}
-        >
-          © 2026 Rent-A-House · Mayerlin Rengifo
-        </p>
+        {/* Copyright + Instagram alineados */}
+        <div className="flex items-center gap-4">
+          <p
+            ref={copyrightRef}
+            className="text-[9px] uppercase tracking-[0.55em] font-light text-white/30"
+            style={{ opacity: 0 }}
+          >
+            © 2026 Rent-A-House · Mayerlin Rengifo
+          </p>
+          <a
+            href="https://www.instagram.com/mayerlinrengifo.rah"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white/40 hover:text-white transition-colors duration-300 shrink-0"
+            aria-label="Instagram"
+          >
+            <Instagram size={15} strokeWidth={1.4} />
+          </a>
+        </div>
 
       </div>
     </footer>

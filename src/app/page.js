@@ -20,8 +20,10 @@ export default function Home() {
       {/* Scene 4 — Lead capture form + FAQ */}
       <ContactSection />
 
-      {/* Scene 5 — Mayerlin Rengifo photo + quote */}
-      <TextReveal text="Los bienes no son sobre inmuebles, son sobre personas." />
+      {/* Scene 5 — Mayerlin Rengifo photo + quote (hidden) */}
+      <div className="hidden">
+        <TextReveal text="Los bienes no son sobre inmuebles, son sobre personas." />
+      </div>
 
       {/* Scene 6 — Dark cinematic footer */}
       <Footer />
