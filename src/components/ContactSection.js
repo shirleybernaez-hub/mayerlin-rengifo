@@ -64,6 +64,7 @@ export default function ContactSection() {
 
   /* Refs */
   const sectionRef    = useRef(null);
+  const bgImgRef      = useRef(null);
   const labelRef      = useRef(null);
   const titleRef      = useRef(null);
   const subtitleRef   = useRef(null);
@@ -78,6 +79,13 @@ export default function ContactSection() {
 
     const ctx = gsap.context(() => {
       const defaults = { ease: "expo.out", duration: 1.1 };
+
+      /* ── PARALLAX IMAGE ── */
+      gsap.fromTo(bgImgRef.current,
+        { y: "-12%" },
+        { y: "12%", ease: "none",
+          scrollTrigger: { trigger: sectionRef.current, start: "top bottom", end: "bottom top", scrub: true } }
+      );
 
       gsap.fromTo(labelRef.current,
         { opacity: 0, y: 20 },
@@ -139,36 +147,16 @@ export default function ContactSection() {
         id="contacto"
         className="relative py-20 md:py-28 px-6 md:px-16 overflow-hidden"
       >
-        {/* Background image */}
+        {/* Background image — parallax via GSAP */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
+          ref={bgImgRef}
           src="/parallax_caracas.webp"
           alt=""
           aria-hidden="true"
           draggable="false"
-          className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
-          style={{ zIndex: 0 }}
-        />
-
-        {/* Dark overlay to keep content readable */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            zIndex: 1,
-            background:
-              "linear-gradient(135deg, rgba(7,8,13,0.82) 0%, rgba(7,8,13,0.70) 50%, rgba(7,8,13,0.78) 100%)",
-          }}
-        />
-
-        {/* Atmospheric glow accents */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            zIndex: 1,
-            background:
-              "radial-gradient(ellipse 55% 50% at 0% 100%, rgba(226,6,19,0.10) 0%, transparent 60%), " +
-              "radial-gradient(ellipse 40% 40% at 100% 0%, rgba(255,255,255,0.03) 0%, transparent 60%)",
-          }}
+          className="absolute left-0 right-0 w-full object-cover object-center pointer-events-none select-none will-change-transform"
+          style={{ zIndex: 0, top: "-12%", height: "124%", willChange: "transform" }}
         />
 
         <div className="relative max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-20 items-start" style={{ zIndex: 2 }}>
@@ -189,7 +177,7 @@ export default function ContactSection() {
               ref={titleRef}
               className="opacity-0 text-[clamp(28px,4vw,50px)] font-serif italic leading-tight mb-6"
             >
-              <span className="text-white/60">Encuentra la propiedad ideal</span>
+              <span className="text-white">Encuentra la propiedad ideal</span>
               <br />
               <span className="inline-block text-white">
                 con asesoría profesional.
@@ -200,7 +188,7 @@ export default function ContactSection() {
             {/* Subtitle */}
             <p
               ref={subtitleRef}
-              className="opacity-0 text-[14px] text-white/35 leading-relaxed max-w-md mb-12"
+              className="opacity-0 text-[14px] text-white/90 leading-relaxed max-w-md mb-12"
             >
               Déjanos tus datos y te contactaremos para ayudarte a tomar la mejor decisión
               inmobiliaria, sin compromiso y sin costo inicial.
