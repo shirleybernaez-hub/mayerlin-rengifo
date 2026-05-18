@@ -410,18 +410,18 @@ export default function HeroSection() {
               </div>
             </div>
             {/* Search button */}
-            <div style={{ display: "flex", alignItems: "center", padding: "6px 8px 6px 6px" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "6px 8px 6px 6px" }}>
               <button
                 type="button"
                 style={{
-                  width: "100%",
-                  height: "52px",
                   background: BRAND_RED,
                   color: "white",
                   fontFamily: SANS,
-                  fontWeight: 700,
-                  fontSize: "13.5px",
-                  letterSpacing: "0.04em",
+                  fontWeight: 600,
+                  fontSize: "11px",
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                  padding: "9px 20px",
                   border: "none",
                   borderRadius: "999px",
                   cursor: "pointer",
@@ -429,6 +429,7 @@ export default function HeroSection() {
                   alignItems: "center",
                   justifyContent: "center",
                   gap: "7px",
+                  whiteSpace: "nowrap",
                   transition: "filter 0.2s",
                 }}
                 onMouseEnter={(e) => (e.currentTarget.style.filter = "brightness(1.1)")}
