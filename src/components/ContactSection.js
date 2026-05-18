@@ -137,19 +137,41 @@ export default function ContactSection() {
       <section
         ref={sectionRef}
         id="contacto"
-        className="relative bg-[#07080D] py-20 md:py-28 px-6 md:px-16 overflow-hidden"
+        className="relative py-20 md:py-28 px-6 md:px-16 overflow-hidden"
       >
-        {/* Subtle white atmospheric glow */}
+        {/* Background image */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/parallax_caracas.webp"
+          alt=""
+          aria-hidden="true"
+          draggable="false"
+          className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
+          style={{ zIndex: 0 }}
+        />
+
+        {/* Dark overlay to keep content readable */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
+            zIndex: 1,
             background:
-              "radial-gradient(ellipse 55% 50% at 0% 100%, rgba(255,255,255,0.025) 0%, transparent 60%), " +
-              "radial-gradient(ellipse 40% 40% at 100% 0%, rgba(255,255,255,0.015) 0%, transparent 60%)",
+              "linear-gradient(135deg, rgba(7,8,13,0.82) 0%, rgba(7,8,13,0.70) 50%, rgba(7,8,13,0.78) 100%)",
           }}
         />
 
-        <div className="relative max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-20 items-start">
+        {/* Atmospheric glow accents */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            zIndex: 1,
+            background:
+              "radial-gradient(ellipse 55% 50% at 0% 100%, rgba(226,6,19,0.10) 0%, transparent 60%), " +
+              "radial-gradient(ellipse 40% 40% at 100% 0%, rgba(255,255,255,0.03) 0%, transparent 60%)",
+          }}
+        />
+
+        <div className="relative max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-20 items-start" style={{ zIndex: 2 }}>
 
           {/* ── LEFT COLUMN ── */}
           <div className="flex flex-col">
