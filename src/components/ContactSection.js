@@ -222,27 +222,16 @@ export default function ContactSection() {
           {/* ── RIGHT COLUMN: FORM ── */}
           <div
             ref={formRef}
-            className="opacity-0 relative rounded-2xl p-7 md:p-9"
-            style={{
-              background: "rgba(255,255,255,0.08)",
-              backdropFilter: "blur(40px) saturate(160%) brightness(1.08)",
-              WebkitBackdropFilter: "blur(40px) saturate(160%) brightness(1.08)",
-              border: "1px solid rgba(255,255,255,0.22)",
-              boxShadow: "0 40px 80px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.28), inset 0 -1px 0 rgba(255,255,255,0.06), inset 1px 0 0 rgba(255,255,255,0.10)",
-            }}
+            className="opacity-0 relative bg-white rounded-2xl p-7 md:p-9"
+            style={{ boxShadow: "0 20px 60px rgba(0,0,0,0.25)" }}
           >
-            {/* Glass specular highlight */}
+            {/* Red top accent */}
             <div
-              className="absolute top-0 left-8 right-8 h-px pointer-events-none"
-              style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.55), rgba(255,255,255,0.80), rgba(255,255,255,0.55), transparent)" }}
-            />
-            {/* Subtle red tint sweep */}
-            <div
-              className="absolute inset-0 rounded-2xl pointer-events-none"
-              style={{ background: "linear-gradient(135deg, rgba(226,6,19,0.04) 0%, transparent 50%)" }}
+              className="absolute top-0 left-10 right-10 h-px pointer-events-none"
+              style={{ background: "linear-gradient(90deg, transparent, rgba(226,6,19,0.5), transparent)" }}
             />
 
-            <p className="text-[9px] font-black uppercase tracking-[0.45em] text-white/40 mb-6">
+            <p className="text-[9px] font-black uppercase tracking-[0.45em] text-neutral-400 mb-6">
               Formulario de solicitud
             </p>
 
@@ -262,7 +251,7 @@ export default function ContactSection() {
 
               {/* Tipo de solicitud */}
               <div>
-                <label className="block text-[9px] font-black uppercase tracking-[0.35em] text-white/40 mb-3">
+                <label className="block text-[9px] font-black uppercase tracking-[0.35em] text-neutral-400 mb-3">
                   Tipo de solicitud
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -273,20 +262,19 @@ export default function ContactSection() {
                       onClick={() => setSelectedType(id)}
                       className={`relative flex flex-col items-center gap-2 py-4 px-2 rounded-xl border transition-all duration-300 group ${
                         selectedType === id
-                          ? "border-[#E20613]/70 shadow-[0_0_16px_rgba(226,6,19,0.18)]"
-                          : "border-white/[0.12] hover:border-white/[0.22]"
+                          ? "border-[#E20613] bg-[#E20613]/8 shadow-[0_0_16px_rgba(226,6,19,0.12)]"
+                          : "border-neutral-200 bg-neutral-50 hover:border-[#E20613]/40 hover:bg-neutral-100"
                       }`}
-                      style={selectedType === id ? { background: "rgba(226,6,19,0.14)" } : { background: "rgba(255,255,255,0.06)" }}
                     >
                       <Icon
                         size={17}
                         className={`transition-colors duration-300 ${
-                          selectedType === id ? "text-[#E20613]" : "text-white/45"
+                          selectedType === id ? "text-[#E20613]" : "text-neutral-400"
                         }`}
                       />
                       <span
                         className={`text-[8px] font-black uppercase tracking-[0.18em] transition-colors duration-300 ${
-                          selectedType === id ? "text-[#E20613]" : "text-white/45"
+                          selectedType === id ? "text-[#E20613]" : "text-neutral-400"
                         }`}
                       >
                         {label}
@@ -305,16 +293,15 @@ export default function ContactSection() {
 
               {/* Mensaje */}
               <div className="flex flex-col gap-2">
-                <label className="text-[9px] font-black uppercase tracking-[0.35em] text-white/40">
+                <label className="text-[9px] font-black uppercase tracking-[0.35em] text-neutral-400">
                   Mensaje
                 </label>
                 <div className="relative">
-                  <MessageSquare size={13} className="absolute top-4 left-4 text-white/30 pointer-events-none" />
+                  <MessageSquare size={13} className="absolute top-4 left-4 text-neutral-400 pointer-events-none" />
                   <textarea
                     placeholder="Cuéntanos qué estás buscando..."
                     rows={4}
-                    className="w-full rounded-xl pl-10 pr-4 pt-3.5 pb-3.5 text-white/80 text-[13px] placeholder-white/25 outline-none resize-none transition-all duration-300 leading-relaxed focus:border-[#E20613]/50"
-                    style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)" }}
+                    className="w-full bg-neutral-50 border border-neutral-200 rounded-xl pl-10 pr-4 pt-3.5 pb-3.5 text-neutral-700 text-[13px] placeholder-neutral-400 outline-none resize-none focus:border-[#E20613]/50 focus:bg-white transition-all duration-300 leading-relaxed"
                   />
                 </div>
               </div>
@@ -341,7 +328,7 @@ export default function ContactSection() {
               </button>
 
               {/* Disclaimer */}
-              <p className="text-center text-[9px] text-white/30 font-medium leading-relaxed">
+              <p className="text-center text-[9px] text-neutral-400 font-medium leading-relaxed">
                 Al enviar, aceptas que Mayerlin Rengifo te contacte para brindarte asesoría inmobiliaria.
                 <br />Tu información es completamente confidencial.
               </p>
@@ -471,27 +458,26 @@ function FormInput({ Icon, label, placeholder, type = "text" }) {
 
   return (
     <div className="flex flex-col gap-2">
-      <label className="text-[9px] font-black uppercase tracking-[0.35em] text-white/40">
+      <label className="text-[9px] font-black uppercase tracking-[0.35em] text-neutral-400">
         {label}
       </label>
       <div
-        className="relative rounded-xl transition-all duration-300"
-        style={{
-          background: focused ? "rgba(255,255,255,0.10)" : "rgba(255,255,255,0.06)",
-          border: focused ? "1px solid rgba(226,6,19,0.55)" : "1px solid rgba(255,255,255,0.12)",
-          boxShadow: focused ? "0 0 0 3px rgba(226,6,19,0.08)" : "none",
-        }}
+        className={`relative rounded-xl border transition-all duration-300 hover:border-[#E20613]/40 ${
+          focused
+            ? "border-[#E20613]/60 bg-white shadow-[0_0_0_3px_rgba(226,6,19,0.08)]"
+            : "border-neutral-200 bg-neutral-50"
+        }`}
       >
         <Icon
           size={13}
-          className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-white/30"
+          className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-400"
         />
         <input
           type={type}
           placeholder={placeholder}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          className="w-full bg-transparent text-white/85 text-[13px] h-11 pl-10 pr-4 rounded-xl placeholder-white/25 outline-none"
+          className="w-full bg-transparent text-neutral-800 text-[13px] h-11 pl-10 pr-4 rounded-xl placeholder-neutral-400 outline-none"
         />
       </div>
     </div>
