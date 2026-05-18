@@ -155,8 +155,8 @@ export default function ContactSection() {
           alt=""
           aria-hidden="true"
           draggable="false"
-          className="absolute left-0 right-0 w-full object-cover object-center pointer-events-none select-none will-change-transform"
-          style={{ zIndex: 0, top: "-12%", height: "124%", willChange: "transform" }}
+          className="absolute left-0 right-0 w-full object-cover object-center pointer-events-none select-none"
+          style={{ zIndex: 0, top: "-20%", height: "140%", willChange: "transform" }}
         />
 
         {/* Overlay */}
@@ -173,7 +173,7 @@ export default function ContactSection() {
             {/* Label */}
             <div ref={labelRef} className="opacity-0 flex items-center gap-3 mb-7">
               <div className="h-px w-12 bg-gradient-to-r from-[#E20613] to-transparent" />
-              <span className="text-[9px] font-black uppercase tracking-[0.55em] text-[#E20613]/60">
+              <span className="text-[9px] font-black uppercase tracking-[0.55em] text-[#E20613]">
                 Contacto Directo
               </span>
             </div>
@@ -216,7 +216,7 @@ export default function ContactSection() {
           {/* ── RIGHT COLUMN: FORM ── */}
           <div
             ref={formRef}
-            className="opacity-0 relative bg-white rounded-2xl p-7 md:p-9"
+            className="opacity-0 relative bg-white rounded-2xl p-7 md:p-9 max-w-md mx-auto w-full lg:max-w-none lg:mx-0"
             style={{ boxShadow: "0 20px 60px rgba(0,0,0,0.25)" }}
           >
             {/* Red top accent */}
